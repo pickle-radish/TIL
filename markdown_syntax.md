@@ -225,6 +225,8 @@ print("hello")
 
 링크와 비슷하지만 앞에 '!'가 붙습니다
 
+**이미지의 이름에는 띄어쓰기가 있으면 안됩니다**
+
 ```
 ![대체 텍스트를 입력하세요](http://www.gstatic.com/webp/gallery/5.jpg "링크 설명을 작성하세요")
 ![Kayak][logo]
