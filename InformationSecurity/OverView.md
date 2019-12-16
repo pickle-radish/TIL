@@ -631,7 +631,7 @@ ping 8.8.8.8
 
 arp -a
 
-
+<br>
 
 ping 
 
@@ -912,9 +912,11 @@ Kali#2에서 아래 명령어를 실행
 
 
 
+<br>
 
+<br>
 
-##### sql injection
+#### SQL Injection
 
 Kali#1 : server 
 
