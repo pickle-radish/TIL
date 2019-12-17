@@ -82,4 +82,3 @@ nautilus &
 
 - tiger vnc를 다운로드 받는다
 - 실행하면 VNC server 에 server의 IP를 입력하고 비밀번호 123456을 입력해준다
-
