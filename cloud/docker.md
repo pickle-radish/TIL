@@ -226,9 +226,143 @@ inspect : 세부 정보를 확일 할 수 있는 옵션
 
 
 
+#### 컨테이너 내부에서 명령어 실행 
 
+docker exec
 
+<br>
 
+#### 도커 볼륨
 
+컨테이너 외부에 데이터를 저장
 
+1. 호스트의 특정 디렉토리를 공유
+2. 다른 컨테이너와 공유
+3. 도커에서 제공해 주는 볼륨
 
+<br>
+
+1. 호스트의 특정 디렉터리 공유
+
+- docker run -d \
+  --name wordpressdb_hostvolume \
+  -e MYSQL_ROOT_PASSWORD=password \
+  -e MYSQL_DATABASE=wordpress \
+  **-v /home/wordpress_db:/var/lib/mysql** \ 
+  mysql:5.7
+
+<br>
+
+2.  워드프레스 이미지를 이용해서 웹 서버 컨테이너를 생성
+   root@server:~/docker# docker run -d --name wordpress_hostvolume 
+   \> -e WORDPRESS_DB_PASSWORD=password 
+   \> --link wordpressdb_hostvolume:mysql 
+   \> -p 80 
+   \> wordpress
+3. 호스트 볼륨 공유를 확인
+   root@server:~/docker# ls /home/wordpress_db/
+4. 컨테이너 삭제 후 볼륨 데이터가 유지되는지 확인
+   root@server:~/docker# docker container stop wordpress_hostvolume wordpressdb_hostvolume
+   root@server:~/docker# docker container rm wordpress_hostvolume wordpressdb_hostvolume
+   root@server:~/docker# ls /home/wordpress_db/
+
+<br>
+
+ 볼륨 컨테이너
+
+docker run -it --name volume_overide -v /home/wordpress_db:/home/testdir_2 alicek106/volume_test
+
+root@server:~/docker# docker run -it 
+
+ --name volumes-from-container 
+
+\> --volumes-from volume_overide 
+
+\>ubuntu:14.04
+
+<br>
+
+도커 볼륨
+
+1. 볼륨 생성
+
+root@server:~/docker# docker volume create --name myvolume
+
+2. 생성한 볼륨을 사용하는 컨테이너를 생성
+   -v [볼륨이름]:[컨테이너 디렉터리]
+   root@server:~/docker# docker run -it --name myvolume_1 
+   \> -v myvolume:/root/ 
+   \> ubuntu:14.04
+3. 동일 볼륨을 사용하는 컨테이너를 생성해서 파일 공유가 되는지 확인
+   root@server:~/docker# docker run -it --name myvolume_1 
+   \> -v myvolume:/root/
+   \> ubuntu:14.04
+
+<br>
+
+도커 클러스터
+
+일반적인 클러스터 구성
+
+- 분산 코디네이터 - 각종 정보를 저장하고 동기화 → 클러스터에 영입할 새로운 서버의 발견, 클러스터의 각종 설정 저장, 데이터 동기화 등에 주로 사용
+- 매니저 - 클러스터 내의 서버를 관리하고 제어
+- 에이전트 - 각 서버를 제어
+
+도커 스웜과 도커 스웜 모드 
+
+- 여러 대의 도커 서버를 하나의 클러스터로 만들어 컨테이너를 생성하는 기능
+- 도커 스웜 → 도커 1.6 버전 이후부터 사용
+  - 에이전트 컨테이너가 필요하며 분산 코디네이터가 외부에 존재해야 함
+  - 여러 대의 도커 서버를 하나의 지점에서 사용하도록 단일 접근점을 제공
+- 도커 스웜 모드 → 도커 1.12 버전 이후부터 사용
+  - 에이전트가 도커 자체에 내장 (분산 코디네이터를 외부에 설치할 필요 없음)
+  - 클러스터링 기능에 초점
+
+도커 스웜과 스웜 모드는 최소 3개 이상의 도커 서버를 필요로 함
+
+도커 스웜 모드 → 매니저 노드와 워커 노드로 구성
+
+- 매니저 노드 : 워커 노드를 관리하기 위한 도커 노드
+- 워커 노드 : 실제 컨테이너가 생성되고 관리되는 도커 노드
+- 매니저 노드에도 컨테이너가 생성될 수 있음 = 매니저 노드는 기본적으로 워커 노드 역할을 포함
+- 매니저 노드는 반드시 1개 이상 존재해야 하며, 운영 환경에서는 다중화하는 것을 권장 
+- 매니저 노드의 절반 이상에 장애가 발생하는 경우 복구를 위해 클러스터 운영을 중지하므로 매니저 노드는 홀수개로 구성하는 것이 효율적
+
+1.  매니저 역할의 서버에서 스웜 클러스를 시작
+   root@swarm-manager:~# docker swarm init --advertise-addr 192.168.111.100
+
+docker swarm join \  --token SWMTKN-1-1ijy2o5balgzurh7dd68efv7304iofq3gzn6ijhqx3atxwyont-4f3n7u2beok42q25amqzc0f3e \  192.168.111.100:2377  ⇐ 새로운 워커 노드를 클러스터에 추가할 때 사용하는 비밀키(토큰)
+
+2. 워커 노드를 추가 root@**swarm-worker1**:~# docker swarm join 
+   \>   --token SWMTKN-1-1ijy2o5balgzurh7dd68efv7304iofq3gzn6ijhqx3atxwyont-4f3n7u2beok42q25amqzc0f3e 
+   \>   192.168.111.100:2377This node joined a swarm as a worker.
+
+3. 도커 서버가 정상적으로 스웜 클러스트에 추가되었는지 확인
+   root@**swarm-manager**:~# docker node ls
+4. 토큰 확인 및 변경 방법
+   root@swarm-manager:~# docker swarm join-token (manager|worker)
+   root@swarm-manager:~# docker swarm join-token --rotate manager
+5. 노드 삭제
+   docker node rm swarm-worker1
+6. 서비스 생성
+   root@swarm-manager:~# docker service create 
+   \> ubuntu:14.04 
+   \> /bin/bash -c "while true; do echo Hello Docker; sleep 1; done"
+7. 서비스 확인
+   root@swarm-manager:~# docker service ls
+8. root@swarm-manager:~# docker service ps (서비스 이름)
+9. 서비스 삭제 → 서비스 상태와 관계 없이 삭제가 가능
+   root@swarm-manager:~# docker service rm 서비스 이름
+10. nginx:1.10에서 nginx:1.11로 업데이트
+    root@swarm-manager:~# docker service update --image nginx:1.11 myweb2
+11. 업데이트 조건과 함께 서비스를 생성
+    \# docker service create \
+     --replicas 4 \ --name myweb3 \
+     --update-delay 10s \ 
+     --update-failure-action continue \
+     nginx:1.10
+
+root@swarm-manager:~# docker service inspect myweb2
+
+12. 서비스 롤백
+    root@swarm-manager:~# docker service update --rollback myweb2
