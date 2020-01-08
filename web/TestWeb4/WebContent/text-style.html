@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	h3.uppercase{
+		text-align:center;
+		text-decoration:overline;
+		text-transform:uppercase;
+	}
+	h3.lowercase{
+		text-align:left;
+		text-decoration:line-through;
+		text-transform:lowercase;
+	}
+	h3.capitalize{
+		text-align:right;
+		text-decoration:underline;
+		text-ransform:capitalize;
+	}
+	p{
+		font-family:"Georgia, 맑은 고딕 , serif";
+	}
+	#p1{font-size:smaller;}
+	#p2{font-size:small; font-style:italic; font-weight: bold;}
+	#p3{font-size:medium; font-style:normal; font-weight:normal;}
+	#p4{font-size:large; font-style:oblique; font-weight:bold;}
+	#p5{font-size:larger;}
+	
+	.article{ column-count:3; column-gap:40px; column-rule: 2px solid red;}
+	h1{column-span:all;}
+	
+	ul, ol{border:1px red dashed;}
+	li{border:1px green dotted;}
+	ul.a{list-style-type:circle;}
+	ul.b{list-style-type:square; list-style-position:inside;}
+	ul.c{list-style-image:url('./image/header.png'); list-style-position: outside; }
+	ol.d{list-style-type:upper-roman;}
+	ol.e{list-style-type:lower-alpha; list-style-position:inside;}
+	
+</style>
+</head>
+<body>
+
+	<h3 class="uppercase">This is some text.</h3>
+	<h3 class="lowercase">This is some text.</h3>
+	<h3 class="capitalize">This is some text.</h3>
+	<br><br><br>
+	
+	<p>Javascript 프로그래밍</p>
+	<p id="p1">Javascript 프로그래밍</p>
+	<p id="p2">Javascript 프로그래밍</p>
+	<p id="p3">Javascript 프로그래밍</p>
+	<p id="p4">Javascript 프로그래밍</p>
+	<p id="p5">Javascript 프로그래밍</p>
+	
+	<br><br><br>
+	
+	<div class="article">
+		<h1>Lorem Ipsum Dolor Sit Amet</h1>
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.
+	
+	</div>
+	
+	
+	<p>Example of unordered lists:</p>
+		<ul class="a">
+     		<li>Coffee</li>
+     		<li>Tea</li>
+     		<li>Coca Cola</li>
+   		</ul>
+
+		<ul class="b">
+			<li>Coffee</li>
+			<li>Tea</li>
+			<li>Coca Cola</li>
+		</ul>
+
+		<ul class="c">
+			<li>Coffee</li>
+			<li>Tea</li>
+			<li>Coca Cola</li>
+		</ul>
+ 
+	<p>Example of ordered lists:</p>
+		<ol class="d">
+			<li>Coffee</li>
+			<li>Tea</li>
+			<li>Coca Cola</li>
+		</ol>
+		<ol class="e">
+     		<li>Coffee</li>
+     		<li>Tea</li>
+     		<li>Coca Cola</li>
+   		</ol>
+   		
+</body>
+</html>

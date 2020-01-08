@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+
+	#parent{
+		background: gray;
+		width: 200px;
+		height: 50px;
+		position: relative;
+	}
+	#child{
+		background: lightgray; 
+		width: 150px; 
+		height: 40px; 
+		position: absolute; 
+		top: 40px; 
+		left: 10px;
+		display:none;
+	}
+	#parent:hover #child{
+		display: block;
+	}
+	
+	.menu{
+		background: lightgray;
+		width: 150px;
+		hegiht: 40px;
+		text-align: center;
+		line-height: 40px;
+	}
+	#child .menu:hover{background: skyblue;}
+	
+	ul{
+		background: lightgray;
+		padding: 6px;
+	}
+	li{
+		display:inline;
+		padding: 10px 20px;
+	}
+	li a{
+		padding: 5px 10px;
+		color: black;
+		text-decoration: none;
+	}
+	li a:hover{
+		background: darkgray;
+	}
+	li.dropdown{
+		display: inline-block;
+	}
+	
+	.dropdown-content {
+ 		display:none;
+		position: absolute; 
+		background: ghostwhite;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	}
+	.dropdown-content a{
+		display:block;
+		padding:12px 16px;
+		text-decoration:none;
+		text-align: left;
+		color: black;
+	}
+	.dropdown-content a:hover{
+		background: lavender;
+	}
+	.dropdown:hover .dropdown-content{
+		display: block;	
+	}
+	
+</style>
+</head>
+
+<body>
+
+	<h3>HTML5 웹 프로그래밍</h3>
+	<hr>
+	<ul>
+		<li class="dropdown">
+			<a href="#home">Home</a>
+		</li>
+		<li class="dropdown">
+			<a href="">Menu1</a>
+			<div class="dropdown-content">
+				<a href="#">menu11</a>
+				<a href="#">menu12</a>
+				<a href="#">menu13</a>
+			</div>
+		</li>
+		<li class="dropdown">
+			<a href="">Menu2</a>
+			<div class="dropdown-content">
+				<a href="#">menu21</a>
+				<a href="#">menu22</a>
+				<a href="#">menu23</a>
+			</div>
+		</li>
+		<li class="dropdown">
+			<a href="">Menu3</a>
+			<div class="dropdown-content">
+				<a href="#">menu31</a>
+				<a href="#">menu32</a>
+				<a href="#">menu33</a>
+			</div>
+		</li>
+		
+	</ul>
+	
+	<div style="height: auto;">
+		<pre>
+		메뉴 내용을 나타내는 부분 입니다.
+		</pre>
+	</div>
+	
+	<div style="margin-top: 100px;"></div>
+	<div id="parent">
+		<div style="text-align: center; padding: 10px;">메뉴 항목</div>
+			<div id="child">
+				<div class="menu">서브메뉴1</div>
+				<div class="menu">서브메뉴2</div>
+				<div class="menu">서브메뉴3</div>
+			</div>
+	</div>
+</body>
+</html>
