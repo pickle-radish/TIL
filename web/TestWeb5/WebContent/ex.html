@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script>
+	var txt = "자바스크립트 프로그래밍을 시작합니다";
+	
+	function welcome() {
+		document.getElementById("demo").innerHTML = txt;
+	}
+</script>
+<style>
+	td {
+		width: 100px;
+		text-align: center;
+	}
+</style>
+</head>
+<body>
+
+	<h3>Welcome to Javascript</h3>
+	<button type="button" onclick="welcome();">
+		Start learning
+	</button>
+	<p id="demo"></p>
+	
+	<script>
+		var v1;
+
+		var v2=100;	
+		document.write(v1 + 1 + "<br>");	
+		document.write(v2 + 1);	
+		v1="100";
+
+		document.write(v1 + 1 + "<br>");	
+	</script>
+	<br><br><br>
+	<h3>Object</h3>
+	<script>
+		var v1=new Object();
+		var v2=new Object();
+		document.write(window.v1===window.v2);
+		
+	</script>
+	<h3>p.258 ex</h3>
+	<script>
+		var subject="javascript", total;
+		document.write(subject);
+		document.write("&nbsp");
+		document.write(total);
+		document.write("<br>");
+		document.write("<br>");
+		var kor=90, eng=88, $income="$50000", __state=true;
+		document.write(kor);
+		document.write("&nbsp");
+		document.write(eng);
+		document.write("&nbsp");
+		document.write($income);
+		document.write("&nbsp");
+		document.write(__state);
+		document.write("<br>");
+		document.write("<br>");
+		var Kor=90, KOR=80, ENG=88;
+		document.write(Kor);
+		document.write("&nbsp");
+		document.write(KOR);
+		document.write("&nbsp");
+		document.write(ENG);
+		document.write("<br>");
+		document.write("<br>");
+		var kor="90", eng1="80";
+		document.write(kor);
+		document.write("&nbsp");
+		document.write(eng1);
+		document.write("<br>");
+	
+	</script>
+	
+	<h3>산술 연산자</h3>
+	<script>
+		var num1=15, num2=4;
+		var grade1=3.8, grade2=4.3, grade3=15.0;
+		var str1="Javascript", str2="Programming", str3="80";
+
+		document.write(num1 + num2 + '<br>');
+		document.write(num1 - num2 + '<br>');
+		document.write(num1 * num2 + '<br>');
+		document.write(num1 / num2 + '<br>');
+		document.write(num1++ + 30 + '<br>');
+		document.write(num1 + '<br>');
+		document.write(-num2 + 30 + '<br>');
+		document.write(num2 + '<br>');
+		document.write(num1 + grade1 + '<br><br>');
+		
+		document.write(temp);
+		var temp="hi";
+		
+	</script>
+	
+	<h3>for문</h3>
+	<script>
+		/* for(prop in window){
+			document.write(prop + "<br>");
+		} */
+		document.write("<hr>");
+		document.write(toolbar);
+		
+		document.write("<hr>");
+		var toolbar="hi";
+		document.write(toolbar);
+		
+		
+	
+	</script>
+	
+	<h3>비교 연산자</h3>
+	
+	<script>
+		var num1 = 15, num2=4 , num3=15;
+		var grade=15.0;
+		var str="80";
+
+		document.write((num1 <= num2) + '<br>');
+		document.write((num1 != num3) + '<br>');
+		document.write((num3 == grade) + '<br>');
+		document.write((num3 === grade) + '<br>');
+		document.write((num3 == 15) + '<br>');
+		document.write((num3 === "15") + '<br>');
+		document.write((str == 80) + '<br>');
+		document.write((str === 80) + '<br><br>');
+	
+	</script>
+	
+	<h3>성적저리 결과</h3>
+	
+	<script>
+		var kor=92, math=77, eng=88;
+		var total, avg;
+		
+		total=kor + math + eng;
+		avg=total/3;
+		
+		document.write('<table border=1>');
+		document.write('<tr><td>국어</td><td>'+kor+'</td></tr>');
+		document.write('<tr><td>수학</td><td>'+math+'</td></tr>');
+		document.write('<tr><td>영어</td><td>'+eng+'</td></tr>');
+		document.write('<tr><td>총점</td><td>'+total+'</td></tr>');
+		document.write('<tr><td>평균</td><td>'+avg+'</td></tr>');
+		document.write('</table>');
+		
+	</script>
+	
+	
+	<h3>블록문 사용 예</h3><hr>
+	
+	<script>
+		var x, y, temp;
+		
+		x=30, y=70, temp="***";
+		
+		if(x>y) {temp=x; x=y; y=temp;
+		}
+		document.write("x="+x+",y="+y+"<br>");
+		
+		x=30, y=70, temp="***";
+		
+		if(x>y) temp=x;	x=y; y=temp;
+		
+		document.write("x="+x+",y="+y+"<br>");
+		
+		x=30, y=70, temp="***";
+		
+		if(x>y) {temp=x;} x=y; y=temp;
+		document.write("x="+x+",y="+y+"<br>");
+	
+	</script>
+	
+	
+	<h3>strig 형</h3>
+	
+	<script>
+		var str1 = "Web Programming";
+		
+		
+		document.write("str1의 크기 : ");
+		document.write(str1.length);
+		document.wirte("<br>");
+	
+		document.write("charAt(0) : ");
+		document.write(str1.charAt(0));
+		document.wirte("<br>");
+	
+	</script>
+	
+	
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

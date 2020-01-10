@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+	<script>
+		var subject1="Welcome to Javascript! <br>";
+		var subject2="Enjoy Javascript programming!";
+		
+		function welcome(target){
+			document.write(target);
+			
+		}
+	</script>
+
+</head>
+<body>
+	<h3>내부 자바스크립트 작성(1)</h3>
+	
+	<script>
+		window.document.write("Welcome to Javascript!<br>");
+		document.write("Enjoy Javascript programming!");
+	</script>
+		
+	<h3>내부 자바스크립트 작성(2)</h3>	
+	<script>
+		window.welcome(window.subject1);
+		welcome(subject2);
+	</script>
+	
+	<h3>외부 자바스큷트 작성</h3>
+	<script src="welcome.js">
+		
+	</script>
+	
+	<h3>인라인 자바스크립트</h3>
+	<button onclick="alert('Welcome to Web Programming1');">웹 프로그래밍</button>
+	<button onclick="welcome(subject1);">웹 프로그래밍</button>
+	<a href="javascript: alert('Welcome to Javascript!');">자바스크립트</a>
+	
+	<div id="here"></div>
+</body>
+</html>
