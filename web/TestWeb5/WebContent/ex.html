@@ -16,6 +16,22 @@
 		width: 100px;
 		text-align: center;
 	}
+	
+	div {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		display:inline-block;
+	}
+	img {
+		width:50px; height:80px; float: left;
+	}
+	#b1{background:red;}
+	#b2{background:green;}
+	#b3{background:blue;}
+	#b4{background:orange;}
+	#b5{background:skyblue;}
+	
 </style>
 </head>
 <body>
@@ -192,6 +208,247 @@
 		document.write(str1.charAt(0));
 		document.wirte("<br>");
 	
+	</script>
+	
+	<h3>number 형</h3>
+	
+	<script>
+		var x=314e-2, y=1234e10;
+		
+		var num1=99999999999999999, nume2=99999999999999999;
+
+		document.write("x = " + x + "<br>");
+		document.write("y = " + y + "<br>");
+		document.write("num1 = " + (num1) + "<br>");
+		document.write("num2 =" + (num2) + "<br>");
+		document.write("51/0 =" + (51/0) + "<br>");
+		document.write("-54/0 =" + (-54/0) + "<br>");
+		document.write("88/'pi'=" + (88/'pi')+ "<br>");
+	</script>
+	
+	<h3>연산자와 형변환</h3>
+	
+	<script>
+	document.write(typeof "John" + '<br>');
+	document.write(typeof 3.14 + '<br>');
+	document.write(typeof NaN + '<br>');
+	document.write(typeof false + '<br>');
+	document.write(typeof [1,2,3,4] + '<br>');
+	document.write(typeof function() {} + '<br>');
+	document.write(typeof myCar + '<br>');
+	document.write(typeof null + '<br>');
+	
+	
+	</script>
+	
+	<h3>undefinde형</h3>
+	<script>
+		var obj = new Object();
+		var num;
+
+		document.write(obj + '<br>');
+		document.write(num + '<br>');
+		obj=null;
+		document.write(obj + '<br>');
+		obj=undefined;
+		document.write(obj + '<br>');
+		document.write((undefined == null) + '<br>');
+		document.write((undefined === null));
+		
+	
+	</script>
+	
+	<h3>data type</h3>
+	<script>
+		var age=28;
+		var weight=50.5;
+		var gender='여';
+		var isPretty=true;
+
+		document.write(age+"<br>");
+		document.write(weight+"<br>");
+		document.write(gender+"<br>");
+		document.write(isPretty	+"<br>");
+			
+	</script>
+	
+	<h3>Type Conversion</h3>
+	<script>
+		
+		var num1=3.143, num2=20, num3=100;
+		var str1="58", str2="3.678", str3="javascript";
+		var flag1=true, flag2=false;
+
+		document.write(str1 + num2 + '<br>');
+		document.write(Number(str1) + num2 + '<br>');
+		document.write(parseInt(str1) + num2 + '<br>');
+		document.write(parseInt(str2) + num2 + '<br>');
+		document.write(parseInt(str3) + num2 + '<br>');
+		document.write(parseFloat(str1) + num2 + '<br>');
+		document.write(parseInt(num1) + num2 + '<br><hr>');
+
+		document.write(num2 + num3 + '<br>');
+		document.write(num2 + num3.toString() + '<br>');
+		document.write(Boolean(num2) + num3.toStrnig() + '<br>');
+		document.write(str3 + Number(flag1) + '<br>');
+		document.write(str3 + Number(flag2) + '<br><br><br><br>,');
+		
+	</script>
+		
+	<input onkeypress="alert('안녕하세요?');">
+		
+		
+	<h4>1. MouseOver/MouseLeave 이벤트 처리</h4>
+	<img src="./image/lightoff.png" onmouseover="this.src='./image/lighton.png';" onmouseleave="this.src='./image/lightoff.png';" /><br><br>
+	마우스가 전구 위에 있으면 켜지고, 벗어나면 꺼집니다.<hr>
+	
+	<h4>2. MouseClick 이벤트 처리</h4>
+	경품 추첨! 원하는 공을 클릭하세요.<br><br>
+	
+	<script>
+		var str1="꽝! 다음을 기약하세요!";
+		var str2="당첨! 축하합니다!";
+	</script>
+	<div id="b1" onclick="document.write(str1);"></div>
+	<div id="b2" onclick="document.write(str1);"></div>
+	<div id="b3" onclick="document.write(str1);"></div>
+	<div id="b4" onclick="document.write(str2);"></div>
+	<div id="b5" onclick="document.write(str1);"></div>
+		
+		
+		
+	<h3>prompt and if else</h3>
+	
+	
+	<button onclick="a();">버튼</button>
+	<script>
+		function a(){
+		var kor=prompt("국어 시험성적은?");
+		
+		if(kor >= 80){
+			document.write('합격입니다<br>');
+			document.write('추과 과제는 없습니다.<br>');
+		} else {
+			document.write('불합격입니다<br>');
+			document.write('추가과제는 있습니다.<br>');
+		}
+	
+		document.write('수업을 종료합니다!');
+		}
+	</script>
+	
+	
+	<h3>switch 문을 이용한 학점 판정</h3>
+	
+	<button onclick="getG()">성적구하기</button>
+	<script>
+	
+		function getG(){
+			var score;
+			var grade;
+			
+			document.write("<h3>학점판정</h3>");
+			score=prompt("성적을 입력하세요");
+			
+			switch (parseInt(score/10)){
+				case 10,9:
+					grade="A";
+					break;
+				case 8:
+					grade="B";
+					break;
+				case 7:
+					grade="C";
+					break;
+				case 6:
+					grade="D";
+					break;
+				default:
+					grade="F";
+			}
+			
+			document.write("<hr>학점판정 결과 : ");
+		 	document.write(score + "(" + grade + ")" 	);
+		}
+	</script>
+	
+	<h3>몇월은 며칠까지 있나</h3>
+	
+	<button onclick="getM()">몇월인가요</button>
+	<script>
+	
+		function getM(){
+			var month=prompt("달을 입력하세요");
+			var end;
+			
+			switch(parseInt(month)){
+				case 1:
+				case 3:
+				case 5:
+				case 7:
+				case 8:
+				case 10:
+				case 12:
+					end=31;
+					break;
+				case 2:
+					end=28;
+					break;
+				default:
+					end=30;
+			
+			}
+			document.write(month + "월은 " + end + "일까지 있습니다");
+			
+		}
+	</script>
+	
+	
+	<h3>for문</h3>
+	
+	<script>
+		let sum=0;
+		for(let i=0; sum<=100000; i=i+1){
+			sum=sum+i;
+		}
+		
+		document.write("1 부터의 N까지의 합이 처음으로 100,000을 넘을 때 <br>");
+		document.write("N은" + (i-1) + "이고, 합은" + sum + "입니다.<hr>");
+	
+	</script>
+	
+	
+	<h3>let을 사용하자</h3>
+	
+	<p id="Ldemo">here</p>
+	<script>
+
+		let a=10;
+	
+		document.getElementById("Ldemo").innerHTML = a;
+		
+	</script>
+	
+	<h3>7의 배수를 제외한 1~100사이의 합 구하기 </h3>
+	
+	<script>
+		sum=0;
+		count=0;
+		
+		for(i=1; i<=100; i=i+1){
+			if(i%7==0) { 
+				count++;
+				continue;
+			}
+			
+			sum=sum+i;
+		
+		}
+		
+		document.write("1~100 사이의 7의 배수 개수 : " + count + "<br>");
+		document.write("1~100 사이의 7의 배수 를 제외한 합 : " + sum + "<br>");
+		
+		
 	</script>
 	
 	
