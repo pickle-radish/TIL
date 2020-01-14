@@ -102,9 +102,70 @@ switch 구문에서 case사용시 다른 언어에서 쓰던것 처럼 한 case�
 
 여러개의 case를 사용하고 break를 생략하는 방식으로 사용
 
+<br>
+
+#### 배열
+
+선언
+
+- var arr = new Array();
+- var arr = []; //권장
 
 
 
+var arr = new Array(10, 20); //2개의 원소를 갖는 배열
+
+var arr = new Array(10); //10개의 길이를 갖는 배열
 
 
 
+일반적으로 java나 c에서의 배열은 같은 타입을 가지는 변수들의 주소를 한 곳에 모아서 인덱스 순서대로 순차적으로 사용하기 위해서 사용한다
+
+하지만 자바스크립트에서의 배열은 겉으로 보기에는 다른 언어와 동일하게 사용하지만 실제 메모리를 사용할 때에 값이 저장되어 있는 주소가 다 제각각으로 흩어져 있어서 퍼포먼스 면에서  각기 다른 변수들을 사용하는 것과 차이가 없다.
+
+<br>
+
+
+
+function은 퍼스트 클라스
+
+function의 지위가 높은 언어를 functional 랭귀지라고 부른다
+
+```javascript
+function() {
+	var v1 = 10;
+	window.v1 // undefined
+	this.v1 //undefined
+	v1 // 10
+}
+```
+
+var v1 =10; 을
+
+let v1=10; 으로 let을 사용하자
+
+
+
+var v1=10;
+
+let v1=20;
+
+--> 같은 이름을 동시에 선언 할 수 없다
+
+
+
+```
+let v1=10;
+function() {
+	let v1=20;
+	document.write(v1); // v1=20
+}
+```
+
+
+
+자바스크립트에서 꼭 알아야 할 2가지
+
+- closer
+
+- 어싱크 어웨이크

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<style>
+	.box {
+		width: 100%;
+		height: 110px;
+		background: whigesmoke;
+	}
+	.info {
+		width: 200px;
+		height: 110px;
+		float: left;
+	
+	}
+	#img{
+		height: 110px;
+		float: left;
+	}
+	.icon{
+		
+		width: 110px;
+		height: 100%;
+	}
+
+</style>
+
+
+
+</head>
+<body>
+
+	<script>
+		function Donut(name, price, kcal, taste) {
+			this.name=name;
+			this.price=price;
+			this.kcal=kcal;
+			this.taste=taste;
+		}
+		
+
+		var donut = [];
+		
+		donut[0] = new Donut("글레이즈드", 1300, 210, "단맛");
+		donut[1] = new Donut("스트로베리 필드", 1800, 235, "딸기맛");
+		donut[2] = new Donut("보스톤 크림", 1500, 220, "크림맛");
+		donut[3] = new Donut("블루베리 베이글", 1400, 230, "블루베리맛");
+		donut[4] = new Donut("플레인 베이글", 1400, 220, "담백한맛");
+		donut[5] = new Donut("올리브 츄이스티", 1300, 200, "쫄깃한맛");
+		donut[6] = new Donut("아몬드 초코 크런치", 1600, 230, "초코맛");
+		donut[7] = new Donut("블루베리 필드", 1900, 220, "블루베리맛");
+		donut[8] = new Donut("바바리안 필드", 1800, 230, "크림맛");
+		donut[9] = new Donut("허니 후리터", 1600, 22q0, "달콤한맛"); 
+
+		
+		for(let i=0; i<donut.length; i++){
+			document.write("<div class='box'>")/
+			document.write("<div class='info'>");
+			document.write("이름 : " + donut[i].name+"<br>");
+			document.write("맛 : " + donut[i].taste+"<br>");
+			document.write("가격 : " + donut[i].price+"<br>");
+			document.write("칼로리 : " + donut[i].kcal+"<br><hr>");
+		 	document.write("</div>");
+			document.write("<div id='img'>");
+			document.write("<img src='./image/"+i+".jpg' class='icon'>") 
+			document.write("</div>"); 
+			document.write("</div>");
+		} 
+	</script>
+	
+</body>
+</html>

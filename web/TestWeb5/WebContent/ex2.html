@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<script>
+		var student = [88, 92, 76];
+		
+		document.write("<hr>배열 student크기 : " + student.length + "<br>");
+		
+		for(i=0; i<student.length; i++){
+			document.write("student[" + i + "] = ");
+			document.write(student[i] + "<br>");
+			
+		}
+		
+		student[6]=84;
+		student[4]="결석";
+		document.write("<hr> 배열 student 크기 : " + student.length + "<br>");
+
+		for(i=0; i<student.length; i++){
+			document.write("student[" + i + "] = ");
+			document.write(student[i] + "<br>");
+			
+		}
+		
+				
+		
+	</script>
+	
+	<h3>let을 사용해보자</h3>
+	
+	<script>
+		let v1=10;
+		
+		document.write(v1);
+		
+	
+	</script>
+	
+	
+	
+	<h3>객체 생성</h3>
+	<script>
+		var v3 = new Object();
+		document.write(v3);
+	    
+	</script>
+	
+	<h3>호이스팅</h3>
+	<script>
+		function f(num) {
+			document.write(num + "<br>");
+		}
+		f(num);
+		
+		var num=100;
+		document.write(num + "<br>");
+	
+	</script>
+	
+</body>
+</html>
