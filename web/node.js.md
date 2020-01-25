@@ -207,13 +207,34 @@ http.createServer((req, res) => {
 
 
 
+#### 미들웨어
+
+하드웨어와 소프트웨어의 중간 것을 다 미들웨어라고 부른다
+
+app.use 안에 들어가는 것들은 다 미들웨어
 
 
 
+### Session
 
+app.js 에 다음 코드를 추가
 
+```js
 
+app.use(session({
+    resave:false, //
+    saveUninitialized:true, //처음에 할당 받은 세션아이디를 변경하지 않고 그대로 사용
+    secret:'아무 값', //세션 암호화 비밀키
+    cookie: {
+        httpOnly:true,  //쿠키가 탈취가 되지 않도록
+        secure:false  //https를 사용할 것이냐 묻는 것
+    }
+}));
 
+```
 
+요청 처리시
 
+`req.session`코드를 통해서 필요한 데이터를 처리
 
+`req.session.id`, `req.session.basket`등 세션에 있는 필요한 변수 이름을 찾아서 값을 받아서 사용한다
