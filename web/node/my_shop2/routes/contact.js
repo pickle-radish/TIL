@@ -6,8 +6,8 @@ const router=express.Router();
 
 router.post('/', (req,res,next)=>{
     
-    con.connect((err)=>{
-        if (err) throw err;
+    // con.connect((err)=>{
+    //     if (err) throw err;
         console.log("Connected!");
         const name=req.body.name;   
         const email=req.body.email;
@@ -23,7 +23,7 @@ router.post('/', (req,res,next)=>{
                 res.json({message: "회원가입 되었습니다"});
             }
         });
-    });
+    // });
 
 });
 

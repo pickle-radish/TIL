@@ -4,9 +4,9 @@ const router=express.Router();
 
 
 router.post('/', (req,res,next)=>{
-    con.connect((err)=>{
+    // con.connect((err)=>{
 
-        if (err) throw err;
+    //     if (err) throw err;
         console.log("Connected!"); 
         const email=req.body.email;
 
@@ -22,6 +22,7 @@ router.post('/', (req,res,next)=>{
                     const name=result[0].name;
                     req.session.email=email;
                     req.session.name=name;
+                    req.session.m_no=result[0].no;
                     res.json({message: `${name}님 로그인 되었습니다`});
                 }else{
                     console.log("no have email");
@@ -29,7 +30,7 @@ router.post('/', (req,res,next)=>{
                 }
             }
         });
-    });
+    // });
 });
 
 module.exports=router;

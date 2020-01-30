@@ -5,7 +5,8 @@ const con = mysql.createConnection({
     database: "nodejs",
     user: "root",
     password: "mysql",
-    port: "3307"
+    port: "3307",
+    dateStrings: "date"
 });
   
 module.exports=con;

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title><%= title %></title>  
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src='http://localhost:3000/js/client.js'></script>
+</head>
+
+
+<body>
+   <div id="board_table" style="width:700px; margin-left:50px;">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td>no</td>
+                    <td>글 제목</td>
+                    <td>작성자</td>
+                    <td>조회수</td>
+               </tr>
+            </thead>
+            <tbody>
+                <%
+                    for(let i=0; i<result.length; i++){
+                %>
+                    <tr>
+                        <td><%= result[i].bo_no %></td>
+                        <td><span class="title_tag" id="<%= result[i].bo_no %>" onclick="show_content(this.id)" style="cursor:pointer;"><%= result[i].title %></span></td>
+                        <td><%= result[i].name %></td>
+                        <td><%= result[i].hit %></td>
+                </tr>
+                <%
+                    }
+                %>
+                <!-- <%
+                    let maxCount=result.length;
+                    let maxPage=maxCount/5+1;
+                    let currentPage=page;
+                    for(let i=(currentPage-1)*5; i<currentPage*5; i++){
+                        if(i<maxCount){
+                %>
+                <tr>
+                    <td><%= result[i].bo_no %></td>
+                    <td><span class="title_tag" id="<%= result[i].bo_no %>" onclick="show_content(this.id)" style="cursor:pointer;"><%= result[i].title %></span></td>
+                    <td><%= result[i].name %></td>
+                    <td><%= result[i].hit %></td>
+               </tr>
+               <%
+                       }
+                    }
+               %> -->
+            </tbody>
+       </table>
+        <!-- <%
+            for(let i=1; i<=maxPage; i++){
+        %>
+                <span id="<%= i %>" onclick="pageClick(this.id)">[<%= i %>]</span>
+        <%
+            }
+        %> -->
+   </div>
+   <div id="board_content_table"></div>
+</body>
+
+
+</html>
