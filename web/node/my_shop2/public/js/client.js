@@ -1,10 +1,10 @@
-function pageClick(page){
-    const send_param={page};
-    $.get('/board/view',send_param, function(){
+// function pageClick(page){
+//     const send_param={page};
+//     $.get('/board/view',send_param, function(){
 
-    });
+//     });
 
-};
+// };
 
 function show_content(bo_no){
     const send_param={bo_no};
@@ -27,8 +27,9 @@ function show_content(bo_no){
 $(document).ready(function(){
 
     $(document).on('click','#board_back',function(){
-        $('#board_table').show();
-        $('#board_content_table').hide();
+        // $('#board_table').show();
+        // $('#board_content_table').hide();
+        location.reload();
     });
     
 

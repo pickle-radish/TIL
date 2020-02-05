@@ -35,6 +35,6 @@ app.use('/contact', contactRouter);
 
 app.use('/', indexRouter);
 
-app.listen(3000,()=>{
+app.listen(3001,()=>{
     console.log('server ready...');
 });

@@ -9,7 +9,15 @@ router.post('/content', (req,res,next)=>{
         if(err){
             res.json({message:"내용을 가져오는데 실패했습니다"});
         }else{
-            res.json({result});
+            const hit=result[0].hit+1;
+            con.query(`update board set hit=${hit} where bo_no=${req.body.bo_no}`,(err)=>{
+                if(err){
+                    res.json({message:"조회수 에러"});
+                }else{
+                    console.log(hit);
+                    res.json({result});
+                }
+            })
         }
     });
 });
