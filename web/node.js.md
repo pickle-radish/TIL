@@ -405,6 +405,10 @@ con.connect((err)=>{
 
 
 
+### sql injection 방어
+
+prepare statement 사용, 내장되있는 escape 함수 사용
+
 
 
 
