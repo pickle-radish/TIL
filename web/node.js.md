@@ -220,7 +220,6 @@ app.use 안에 들어가는 것들은 다 미들웨어
 app.js 에 다음 코드를 추가
 
 ```js
-
 app.use(session({
     resave:false, //다시 저장하지 않음
     saveUninitialized:true, //초기화 되지 않아도 저장하겠다
@@ -230,7 +229,6 @@ app.use(session({
         secure:false  //https를 사용할 것이냐 묻는 것
     }
 }));
-
 ```
 
 요청 처리시
@@ -413,15 +411,17 @@ prepare statement 사용, 내장되있는 escape 함수 사용
 
 
 
+### ORM
+
+djanggo orm
+
+복잡한 데이터베이스 쿼리문을 원활하게 사용하게 해줄 수 있는 툴..?
 
 
 
 
 
-
-
-
-
+### Sequelize 사용하기
 
 
 

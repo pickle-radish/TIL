@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/redux@latest/dist/redux.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <button id="delete">delete</button>
+    <input>
+    <button id="add">add</button>
+    <br>
+    <div>
+
+    </div>
+
+    <script>
+        function reducer(state, action){    //순서 2번  reducer 정의
+            if(state===undefined){
+                state=[];
+            }
+            if(action.type==="add"){
+                state.unshift(action.value);
+            }else if(action.type==="delete"){
+                return state.filter((item)=>{
+                    return item !== action.value;
+                })
+            }else{
+                return state;
+            }
+        }
+        const store = Redux.createStore(reducer);  // 순서 1번  스토어 생성
+        const state = store.getState();     //순서 3번 state를 얻는다
+        
+
+
+        $(document).ready(function(){
+            store.subscribe(function(){     //순서 4번 적절한 위치에 구독
+                $('div').text(state);
+            });
+            $('#add').click(function(){
+                const data=$('input').val();
+                const action={
+                    type:"add",
+                    value: data,
+                };
+                store.dispatch(action);     // 순서 5 번 action을 정의한다
+
+                $('input').val('');
+                $('input').focus();
+
+            })
+            $('#delete').click(function(){
+                const data=$('input').val();
+                const action={
+                    type:"delete",
+                    value: data,
+                };
+                store.dispatch(action);     // 순서 5 번 action을 정의한다
+
+                $('input').val('');
+                $('input').focus();
+
+            })
+        });
+
+
+    </script>
+</body>
+</html>
