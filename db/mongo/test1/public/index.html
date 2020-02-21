@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <input id="name" placeholder="name"><br/>
+    <input id="age" placeholder="age"><br/>
+    <input name="married" type="checkbox">married<br/>
+    <button id="addMember">register</button></br>
+    <button id="updateMember">update</button></br>
+
+    <hr>
+    <button id="getAllMember">show all member</button>
+    
+    <div id="all_div"></div>
+
+    <hr>
+    <input id='userID' placeholder="user ID"></br>
+    <input id='comment' placeholder="comment"></br>
+    <button id="addComment">register</button>
+
+    <hr>
+    <button id="getComment">show all comment</button>
+    <div id="comment_div"></div>
+
+    <script>
+        function delMember(_id){
+
+            $.post('/member/delete', {_id}, function(returnData){
+                alert(returnData.message);
+                $.removeCookie('_id');
+            })
+        }
+        
+        function delComment(_id){
+
+            $.post('/comments/delete', {_id}, function(returnData){
+                alert(returnData.message);
+                // $.removeCookie('_id');
+            })
+        }
+
+        updateComment=(_id)=>{
+            const newComment = prompt('');
+            if(!newComment){
+                return alert('You must input comment');
+            }
+            const send_param={
+                _id,
+                newComment
+            }
+            $.post('/comments/update', send_param, function(returnData){
+                alert(returnData.message);
+            })
+        }
+
+        
+
+        
+
+        function display(_id, name, age, married){
+            // alert(name + " : " + age + " : " + married)
+            $.cookie('_id', _id);
+            console.log($.cookie('_id'));
+            $('#name').val(name);
+            $('#age').val(age);
+            if(married=='true'){
+                $('input[name="married"]').attr("checked", true);
+            }else{
+                $('input[name="married"]').attr("checked", false);
+            }
+        }
+
+
+
+        $(document).ready(function(){
+
+
+            $('#updateMember').click(function(){
+                const _id=$.cookie('_id');
+                const name=$('#name').val();
+                const age=$('#age').val();
+                const married=$('input[name="married"]').is(":checked");
+                const send_param={
+                    _id,
+                    name,
+                    age,
+                    married
+                }
+                $.post('/member/update', send_param, function(returnData){
+                    $.removeCookie('_id');
+                })
+            })
+
+
+            $('#addMember').click(function(){
+                const name=$('#name').val();
+                const age=$('#age').val();
+                const married=$('input[name="married"]').is(":checked");
+                const send_param={
+                    name,
+                    age,
+                    married
+                }
+                $.post('/member/add', send_param, function(returnData){
+                    alert(returnData.message);
+                })
+            })
+
+
+
+            $('#getAllMember').click(function(){
+                $.post('/member/getAllMember', {}, (returnData)=>{
+                    let result='<table border="1"><tr><td>ID</td><td>name</td><td>age</td><td>married</td><td>deleteButton</td></tr>';
+                    returnData.users.forEach((item)=>{
+                        result+=`<tr><td onclick="display('${item._id}','${item.name}','${item.age}','${item.married}')">${item._id}</td><td>${item.name}</td><td>${item.age}</td><td>${item.married}</td><td><button onclick="delMember('${item._id}')">delete</button></td></tr>`;
+                    });
+                    result+='</table>';
+                    $('#all_div').html(result);
+                });
+            });
+
+
+            $('#addComment').click(function(){
+                const commenter=$('#userID').val();
+                const comment=$('#comment').val();
+                const send_param={
+                    commenter,
+                    comment,
+                }
+                $.post('/comments/add', send_param, function(returnData){
+                    alert(returnData.message);
+                })
+            })
+
+
+
+            $('#getComment').click(function(){
+                $.post('/comments/getAllComment', {}, (returnData)=>{
+                    let result='<table border="1"><tr><td>ID</td><td>name</td><td>comment</td><td>update</td><td>delete</td></tr>';
+                    returnData.comments.forEach((item)=>{
+                        result+=`<tr><td>${item._id}</td><td>${item.commenter.name}</td><td>${item.comment}</td><td><button onclick="updateComment('${item._id}')">update</button></td><td><button onclick="delComment('${item._id}')">delete</button></td></tr>`;
+                    });
+                    result+='</table>';
+                    $('#comment_div').html(result);
+                });
+            });
+        });
+
+
+
+    </script>
+
+
+</body>
+</html>
