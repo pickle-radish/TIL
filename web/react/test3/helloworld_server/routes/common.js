@@ -17,4 +17,4 @@ async function getAllPosts(){
 
 }
 
-module.exports=getAllPostsl;
+module.exports=getAllPosts;

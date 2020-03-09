@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title> 
+    
+    <script>
+        function a(){
+            var fileObj=document.getElementById('file1');
+            console.log(fileObj)
+        }
+
+        function b(){
+            var fileObj=document.getElementById('file1');
+            var fileList = fileObj.files;
+            var reader=new FileReader();
+            if(fileList[0].type.startsWith('text')){
+                reader.readAsText(fileList[0]);
+                reader.onload=function(){
+                    document.getElementById('content').textContent=reader.result;
+                }
+            }else if (fileList[0].type.startsWith('image')){
+                reader.readAsDataURL(fileList[0]);
+                reader.onload=function(){
+                    document.getElementById('img').src=reader.result;
+                }
+            }
+        }
+    </script>
+
+</head>
+<body onload='a()'>
+
+    파일 선택 : <input type='file' id='file1' onchange='b()'> <hr>
+    <div id='content'></div>
+
+    <img src='' id='img'>
+
+</body>
+</html>

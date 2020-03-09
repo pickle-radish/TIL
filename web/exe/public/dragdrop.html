@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #div1, #div2{
+            width: 300px;
+            height: 100px;
+            border: 1px solid black;
+        }
+        img {
+            width: 50px;
+            margin: 10px;
+        }
+    </style>
+    <script>
+        function a(event){
+            event.dataTransfer.setData('imgNo', event.target.id);
+        }
+
+        function b(event){
+            event.preventDefault();
+            var data = event.dataTransfer.getData('imgNo');
+            console.log(data);
+            event.target.appendChild(document.getElementById(data));
+        }
+        function c(event){
+            event.preventDefault();
+        }
+    </script>
+</head>
+<body>
+    <div id='div1' ondrop="b(event)" ondragover="c(event)">
+        <img src='./image/logo0.png' draggable='true' ondragstart='a(event)' id='d0'/>
+        <img src='./image/logo1.png' draggable='true' ondragstart='a(event)' id='d1'/>
+        <img src='./image/logo2.png' draggable='true' ondragstart='a(event)' id='d2'/>
+        <img src='./image/logo3.png' draggable='true' ondragstart='a(event)' id='d3'/>
+    </div>
+    <hr>
+    <div id='div2' ondrop="b(event)" ondragover="c(event)"></div>
+</body>
+</html>

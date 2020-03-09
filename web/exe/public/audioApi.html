@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var audio1 = new Audio();
+
+        function musicPlay() {
+            audio1.src=document.getElementById('song2').value;
+            audio1.play();
+        }
+
+        function musicStop(){
+            audio1.pause();
+            audio1.currentTime=0;
+        }
+    </script>
+
+    듣고 싶은 음악을 선택하세요<br><br>
+    희망곡:
+    <select id='song2' name='song' size='1'>
+        <option value="./music/song1.mp3" selected>Don't cry for me Argentina</option>
+        <option value="./music/song2.mp3">Dust In The Wind</option>
+    </select><hr>
+
+    <div>
+        <button onclick="audio1.play();">노래시작</button>
+        <button onclick="audio1.pause();">일시멈춤</button>
+        <button onclick="audio1.play();">계속감상</button>
+        <button onclick="audio1.currentTime -=1;">되돌리기</button>
+    </div>
+
+
+
+</body>
+</html>
