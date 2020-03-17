@@ -15,5 +15,18 @@
         <input type='file' name='file'>
         <input type='submit' value='파일 업로드' />
     </form>
+
+
+    <div id='a'></div>
+    <div id='b'></div>
+    <script>
+        var x = 1;
+        function a(){
+            let x = 2;
+            document.getElementById('a').innerHTML=x;
+            document.getElementById('b').innerHTML=this.x;
+        }
+        a();
+    </script>
 </body>
 </html>

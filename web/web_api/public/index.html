@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        let w;
+        function startWorker(){
+            if(typeof(Worker)!=='undefined'){
+                if(typeof(w) == 'undefined'){
+                    w=new Worker("workertask.js");
+                }
+                w.onmessage=function(event){
+                    document.getElementById('result').innerHTML=event.data;
+                }
+            }else{
+                document.getElementById('result').innerHTML="이 브라우저는 worker를 지원하지 않습니다";
+            }
+        }
+
+        function stopWorker(){
+            w.terminate();
+        }
+
+        let webSocket;
+        function startChat(){
+            webSocket=new WebSocket('ws://localhost:8080');
+            webSocket.onopen=function(){
+                chatId='['+document.getElementById('chatId').value + ']';
+                if(chatId){
+                    alert('채팅시작');
+                }else{
+                    alert('채팅 아이디를 입력하세요');
+                }
+            }
+            webSocket.onmessage=function(event){
+                document.getElementById('ta').value+=event.data;
+            }
+        }
+
+        function sendMsg(event){
+            console.log(event);
+            if(event.key==='Enter'){
+                console.log('서버로 전송 시작');                
+                webSocket.send(chatId+document.getElementById('a').value+'\n');
+                document.getElementById('a').value='';
+            }
+        }
+        let source
+        function sse(){
+            source = new EventSource("/sse");
+            source.onmessage = function(event) {
+                console.log(event.data);
+            };
+        }
+
+        function sse_stop(){
+            source.close();
+        }
+    </script>
+
+</head>
+<body>
+    <form enctype="multipart/form-data" method="post" action='upload/img'>
+        <input type="file" name='filetoupload'>
+        <input type='submit' valeu='파일 업로드'>
+    </form>
+    <hr>
+    <button onclick='startWorker()'>500보다 큰 소수 찾기</button>
+    <button onclick="stopWorker()">종료</button><br>
+    <p>결과:<span id='result'></span></p>
+    <hr>
+
+    <input id='chatId' placeholder="채팅 아이디를 입력하세요"><button onclick="startChat()">채팅접속</button>
+    <br><br>
+    <textarea rows='10' cols='50' id='ta'></textarea><br>
+    <input onkeypress='sendMsg(event)' id='a'>
+
+    <hr>
+    <button onclick="sse()">경매 진행 보기</button><br>
+    <button onclick="sse_stop()">경매 그만 보기</button>
+    <br><br>
+
+
+
+</body>
+</html>
