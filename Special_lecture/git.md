@@ -4,7 +4,29 @@
 2. 협업 도구
 3. 배포 도구
 
+   - 개츠비
+   - 깃허브 페이지스
+   - 스타트 부트스트랩(css 툴)
+   - godadday (도메인 구매 사이트)
+   - Heroku
+
+   
+
+
+
 kubernetes (쿠버네티스)
+
+Platform as a Service => PaaS
+
+Infrastructure as a Service => IaaS
+
+git bransh visualizer
+
+octotree
+
+githubdesktop
+
+mlab
 
 
 
@@ -92,10 +114,13 @@ kubernetes (쿠버네티스)
 #### !!브랜치는 일회용 : 더이상 쓰이지 않는 브랜치는 항상 정리해줘야 한다
 
 1. git branch 
+   
    - 현재 브랜치를 조회하는 명령어 (기본적으로 master)
 2. git branch [브랜치명] 
+   
    - 새로운 브랜치를 생성하는 명령어
 3. git checkout [브랜치명]
+   
    - 브랜치 이동
 4. git merge [합칠 브랜치명] 
    - **(주의!)**  master에서 test를 병합할 때 master를 이동 후 merge를 진행해야 함
@@ -155,21 +180,51 @@ kubernetes (쿠버네티스)
 
 
 
+
+
+## Heroku
+
+heroku downlod를 구글에 검색해서 다운로드
+
+heroku login -i  명령어로 로그인
+
+heroku create
+
+git remote -v 명령어시 아무것도 안나옴
+
+git init 후 다시 heroku create
+
+git remote -v 명령어를 치면 이번엔 remote가 생김
+
+똑같이 add, commit, push
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### !주의 사항
 
 .git 폴더가 있는 파일 밑에는 .git 파일이 또 들어가지 않게 주의
 
+해당 저장소 위치에 들어가서 뒤에 /invitations 하면 수락 가능
 
 
 
 
 
 
-
-
-
-
-#### 
 
 
 
