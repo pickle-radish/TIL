@@ -45,3 +45,39 @@ function reducer(state, action){
 
 jquery는 다음과 같이 작성한다
 
+
+
+
+
+1. Store
+
+저장소
+
+2. Action
+
+요청(증가 감소)
+
+3. Dispatcher
+
+Action store에 전달
+
+4. Reducer
+
+store에 저장된 상태변수를 변경
+
+
+
+
+
+index.html -> index.js -> App.js
+
+
+
+Redux는 반드시 React와 연동할 수 있다 .( X )
+
+React-Redux 
+
+
+
+
+
