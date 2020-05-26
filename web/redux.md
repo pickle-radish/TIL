@@ -75,9 +75,7 @@ index.html -> index.js -> App.js
 
 Redux는 반드시 React와 연동할 수 있다 .( X )
 
-React-Redux 
-
-
+React-Redux github  -> [https://react-redux.js.org](https://react-redux.js.org/) 들어가서 Quick Start
 
 
 
