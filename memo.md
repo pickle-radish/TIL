@@ -17,3 +17,16 @@ https://jsonplaceholder.typicode.com/
 
 
 sw expert academy
+
+
+
+해커톤 
+
+엔젤핵
+
+
+
+aws 한국사용자 모임
+
+aws re invent
+

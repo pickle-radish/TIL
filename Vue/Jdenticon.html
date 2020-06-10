@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>Identicon 생성기</h1>
+        input: <input type="text" v-model="inputData" v-on:input="changeImage">
+        <br>
+        <br>
+        Output:<br>
+        <div v-html="changeImage()"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jdenticon@2.2.0" async>
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el:"#app",
+            data:{
+                inputData:""
+            },
+            methods:{
+                changeImage(){
+                    return jdenticon.toSvg(this.inputData, 200);
+                }
+            },
+
+        })
+    </script>
+</body>
+</html>

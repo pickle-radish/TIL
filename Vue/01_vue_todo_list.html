@@ -14,39 +14,90 @@
     
     <div id="app">
         <h1>Todo List</h1>
+        <select v-model="status">
+            <option value="showAll">모두보기</option>
+            <option value="showCompleted">완료된 것만 보기</option>
+            <option value="showIncomplete">미완료된 것만 보기</option>
+        </select>
         <input type="text" v-model="newInput" v-on:keypress.enter="createTodo">
         <button v-on:click="createTodo">추가</button>
         <ul>
-            <li v-bind:class="{completed: todo.isCompleted}" v-for="todo in todos" >
+            <li v-bind:class="{completed: todo.isCompleted}" v-for="todo in todosByStatus">
                 <input v-model="todo.isCompleted" type="checkbox">
                 {{todo.content}}
             </li>
             
         </ul>
+        <button v-on:click="deleteList">완료된 할 일 지우기</button>
+
+        <h1>Computed vs Method 비교</h1>
+        <div v-if="visible">
+            <p>computed : {{ computedDate }}</p>
+            <p>method : {{ methodDate() }}</p>
+        </div>
+        <button v-on:click="visible=!visible">리로드</button>
+
+
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
-        new Vue({
+        const app = new Vue({
             el:'#app',
             data:{
+                visible: true,
                 name: 'john',
+                status: 'showAll', //compledted, showIncomplete
                 newInput:'',
                 todos: [
                     {content: 'Vue js 복습', isCompleted: false},
                     {content: 'JS 복습', isCompleted: true},
-                    {content: '코팅 테스트 준비', sCompleted: false},
+                    {content: '코팅 테스트 준비', isCompleted: false},
                     {content: 'Node JS 복습', isCompleted: false},
                 ],
             },
-            methods:{
-                createTodo(){
-                    this.todos.push({content:this.newInput, isCompletd:false})
-                    this.newInput="";
-                }
-                
-            }
+            computed:{
+                computedDate(){
+                    return new Date()
+                },
 
+                todosByStatus() {
+                    //status = 'showCompleted'
+                    if(this.status==='showCompleted'){
+                        return this.todos.filter(todo=>todo.isCompleted)
+                    }else if(this.status==="showIncomplete"){
+                        return this.todos.filter(todo=>!todo.isCompleted)
+                    }else{
+                        return this.todos
+                    }
+                }
+            },
+            methods:{
+                methodDate() {
+                    return new Date()
+                },
+                createTodo(){
+                    if(this.newInput){
+                        this.todos.push({content:this.newInput, isCompletd:false})
+                        this.newInput="";
+                    }else{
+                        alert("뭐 쓰고 맗해")
+                    }
+                },
+                deleteList(){
+                    this.todos = this.todos.filter(todo=>!todo.isCompleted)
+                },/*    
+                todosByStatus() {
+                    //status = 'showCompleted'
+                    if(this.status==='showCompleted'){
+                        return this.todos.filter(todo=>todo.isCompleted)
+                    }else if(this.status==="showIncomplete"){
+                        return this.todos.filter(todo=>!todo.isCompleted)
+                    }else{
+                        return this.todos
+                    }
+                }*/
+            }
         })
     </script>
 </body>
