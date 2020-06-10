@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>Identicon 생성기</h1>
+
+        <div>
+            크기선택:
+            <select name="" id="" v-model="size">
+                <option value=80>소</option>
+                <option value=150>중</option>
+                <option value=300>대</option>
+            </select>
+        </div>
+        <p>input: <input type="text" v-model="newInput" v-on:input="refresh"></p>
+        <p>ouput: <svg :data-jdenticon-value="newInput" :width="size" :height="size"></svg></p>
+
+        <div>
+            jdenticon method를 활용한 svg생성:
+            <div v-html="identicon()"></div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jdenticon@2.2.0" async></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                newInput: '',
+                size:'150',
+            },
+            computed:{
+
+            },
+            methods:{
+                refresh(){
+                    jdenticon();
+                },
+                identicon(){
+                    return jdenticon.toSvg(this.newInput,this.size)
+                }
+            },
+        })
+
+    </script>
+
+</body>
+</html>

@@ -124,6 +124,8 @@ var app3 = new Vue({
 
 exe) `v-bind:class="{className: true or false}"`
 
+- `v-bind:class` => `:class` 로 축약 가능
+
 ```html
 <style>
     .testClass{
@@ -149,6 +151,7 @@ var app3 = new Vue({
 #### v-on
 
 - 이벤트 바인딩
+- `v-on:input` => `@input` 으로 축약 가능
 
 ```html
 <div id="app-5">
@@ -196,3 +199,54 @@ const app = new Vue({
 ```
 
 input 창에 값을 입력하면 실시간으로 p테그에 입력한 값이 들어간다
+
+
+
+#### v-text
+
+`{{name}}` 과 `<div v-text="name"` 는 동일
+
+
+
+#### v-html
+
+- vue에서 전달해 주는 값이 태그가 있을 경우 랜더링해서 보여준다
+
+```html
+    <div id="app">
+        <input type="text" v-html="inputHtml">
+    </div>
+```
+
+```js
+const app = new Vue({
+    el:'#app',
+    data: {
+        inputText:'<h1>hello</h1>'
+    }
+})
+```
+
+
+
+### Vue Instatnce(객체)
+
+
+
+- `el: '#app'` : Vue 객체의 마운트 포인트
+- `data:{}`: 관리할 데이터
+- `methods:{}`: 함수
+- `comouted:{}` : 함수화된 데이터
+
+- `watch:{}` : 데이터 변경에 대한 콜백 
+
+#### 
+
+## Vue life syscle hook
+
+- `created()` : 객체 생성 직후
+- `beforeMount()`
+
+---
+
+dom이 보이기 시작
