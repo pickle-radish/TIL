@@ -196,3 +196,136 @@ const app = new Vue({
 ```
 
 input 창에 값을 입력하면 실시간으로 p테그에 입력한 값이 들어간다
+
+
+
+### Props
+
+다른 컴포넌트간에 데이터 전달
+
+상위 컴포넌트에서 다음과 같이 값을 넘겨준다
+
+```vue
+<template>
+	<Buttons :msg="msg"/>
+</template>
+<script>
+	import Buttons from './components/Buttons.vue'
+    
+    export default{
+        name:'App',
+        components:{
+            Buttons,
+        }
+        data(){
+            return {
+                msg:"message"
+            }
+        }
+    }
+
+</script>
+```
+
+그러면 하위 컴포넌트에서 다음과 같이 받아서 사용한다
+
+```vue
+<template>
+    <div>
+        {{msg}}
+    </div>
+</template>
+
+<script>
+
+export default {
+    name:"Buttons",
+    props:{
+        msg:String
+    }
+}
+</script>
+```
+
+
+
+
+
+### emit
+
+자식 컴포넌트가 부모 컴포넌트에게 이벤트 전달
+
+이벤트가 일어나는 컴포넌트에서 버튼을 클릭시 해당하는 함수를 정의하고
+
+함수 내부에서 $emit을 사용해 이벤트 이름을 정의 해준다 
+
+정의 된 이벤트는 상위 컴포넌트로 전달된다
+
+
+
+```vue
+<template>
+    <div>
+        <button @click="Clicked">Test Button</button>
+    </div>
+</template>
+
+<script>
+export default {
+    name:"button",
+    methods:{
+        Clicked(){
+            this.$emit('ButtonClicked')
+        },
+    }
+}
+</script>
+```
+
+상위 컴포넌트에서 다음과 같이 v-on을 통해 ButtonClicked라는 사용자 정의된 이벤트를 받을 수 있고
+
+해당 이벤트 발생시 호출할 함수를 정하고 실행한다
+
+
+
+```vue
+<template>
+	<div>
+	    <Buttons @ButtonClicked="writeMsg"/>
+        {{msg}}
+    </div>
+</template>
+
+<script>
+import Buttons from './components/Buttons.vue'
+
+export default {
+  name: 'App',
+  components: {
+    DogImage,
+    CatImage,
+    Buttons
+  },
+  data(){
+	return {
+		msg:""
+    }
+  }
+  methods:{
+        writeMsg(){
+            this.msg="button clicked !"
+        },
+    }
+}
+</script>
+```
+
+
+
+
+
+## extention
+
+vetur
+
+- vs code에서 유용하게 파일을 볼 수 있기 위해 설치
