@@ -32,6 +32,7 @@ aws re invent
 
 
 
+<<<<<<< HEAD
 dog.ceo
 
 
@@ -51,3 +52,14 @@ python notebook
 
 
 넬리파이 netlify
+=======
+#### vs cdoe extention
+
+open in browser
+
+live server
+
+
+
+MeasureThat.net
+>>>>>>> bcfb1039383f3e325f9c921a667174beaab16a1a

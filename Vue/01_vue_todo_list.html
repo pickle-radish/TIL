@@ -22,7 +22,7 @@
         <input type="text" v-model="newInput" v-on:keypress.enter="createTodo">
         <button v-on:click="createTodo">추가</button>
         <ul>
-            <li v-bind:class="{completed: todo.isCompleted}" v-for="todo in todosByStatus">
+            <li v-bind:key="todo.id" v-bind:class="{completed: todo.isCompleted}" v-for="todo in todosByStatus">
                 <input v-model="todo.isCompleted" type="checkbox">
                 {{todo.content}}
             </li>
@@ -30,18 +30,26 @@
         </ul>
         <button v-on:click="deleteList">완료된 할 일 지우기</button>
 
-        <h1>Computed vs Method 비교</h1>
+        <!-- <h1>Computed vs Method 비교</h1>
         <div v-if="visible">
             <p>computed : {{ computedDate }}</p>
             <p>method : {{ methodDate() }}</p>
         </div>
-        <button v-on:click="visible=!visible">리로드</button>
+        <button v-on:click="visible=!visible">리로드</button> -->
 
 
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
+        const todoStorage = {
+            save(todos){
+                localStorage.setItem('todos', JSON.stringify(todos))
+            },
+            fetch(){
+                return JSON.parse(localStorage.getItem('todos'))
+            }
+        }
         const app = new Vue({
             el:'#app',
             data:{
@@ -49,12 +57,7 @@
                 name: 'john',
                 status: 'showAll', //compledted, showIncomplete
                 newInput:'',
-                todos: [
-                    {content: 'Vue js 복습', isCompleted: false},
-                    {content: 'JS 복습', isCompleted: true},
-                    {content: '코팅 테스트 준비', isCompleted: false},
-                    {content: 'Node JS 복습', isCompleted: false},
-                ],
+                todos: []
             },
             computed:{
                 computedDate(){
@@ -78,10 +81,14 @@
                 },
                 createTodo(){
                     if(this.newInput){
-                        this.todos.push({content:this.newInput, isCompletd:false})
+                        this.todos.push({
+                            id: this.todos.length,
+                            content:this.newInput, 
+                            isCompleted:false
+                        })
                         this.newInput="";
                     }else{
-                        alert("뭐 쓰고 맗해")
+                        alert("뭐 쓰고 말해")
                     }
                 },
                 deleteList(){
@@ -97,7 +104,22 @@
                         return this.todos
                     }
                 }*/
-            }
+
+            },
+            watch:{
+                todos:{
+                    handler: function(todos){
+                        console.log('데이터 변경됨')
+                        todoStorage.save(todos)
+                    },
+                    deep:true
+                },
+            },
+
+            // created: function(){}, 와 동일
+            created(){
+                this.todos = !todoStorage.fetch() ? []: todoStorage.fetch()
+            },
         })
     </script>
 </body>
