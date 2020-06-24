@@ -113,3 +113,38 @@ NoSQL 은 스키마가 없다
 ```js
 npm install autoprefixer@9.8.0
 ```
+
+
+
+mlab
+
+
+
+
+
+
+
+### imgur
+
+`vue create imgur-upload`
+
+`npm i lodash qs axios`
+
+`vue add router`
+
+`vue add vuex`
+
+
+
+시멘틱 유아이 semantic web ui
+
+
+
+1. 로그인 버튼을 누르면, imgur oauth페이지로 이동
+2. 사용자가 권한을 준다
+3. IMGUR가 AccessToken과 함께 우리 App으로 redirect
+4. 
+5. /oauth2/callback으로 오면, AuthHandleer 컴포넌트 랜더
+6. AuthHandler 컴포넌트에서 token추출
+7. 추출한 토큰으로 vuex 의 state.token을 갱신
+8.  / 으로 리다이렉트
