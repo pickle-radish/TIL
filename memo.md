@@ -136,7 +136,7 @@ mlab
 
 
 
-시멘틱 유아이 semantic web ui
+시멘틱 유아이 semantic ui
 
 
 
