@@ -148,3 +148,58 @@ mlab
 6. AuthHandler 컴포넌트에서 token추출
 7. 추출한 토큰으로 vuex 의 state.token을 갱신
 8.  / 으로 리다이렉트
+
+
+
+
+
+css text animation
+
+
+
+
+
+### Coding test
+
+1. 프로그래머스 1단계
+2. SWEA 1단계
+3. Code/Learn intermediate
+4. SWEA 2단계
+
+-------------------- Samsung IM 
+
+5. 백준 1244번 문제
+6. Code/Learn advanced
+
+-------------------- Samsung A
+
+7. Code/Learn Solving
+
+https://swexpertacademy.com/main/main.do
+
+
+
+
+
+
+
+python unit test
+
+
+
+vi ~/.bash_profile 파일을 열고  
+
+별명을 지을 명령어를 입력
+
+`alias ty="test.py"`  ! 띄어쓰기 하지 말것
+
+파일 저장하고
+
+source ~/.bash_profile
+
+
+
+
+
+
+
