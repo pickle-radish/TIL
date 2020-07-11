@@ -110,6 +110,8 @@ NoSQL 은 스키마가 없다
 
 
 
+### autoprefixer error
+
 ```js
 npm install autoprefixer@9.8.0
 ```
@@ -203,3 +205,4 @@ source ~/.bash_profile
 
 
 
+flex box froggy

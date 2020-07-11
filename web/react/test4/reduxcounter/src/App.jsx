@@ -11,7 +11,7 @@ const increaseAction = {type:"increase"};
 const decreaseAction = {type:"decrease"};
 
 
-function mapDispatchToProps(dispatch)ty{
+function mapDispatchToProps(dispatch){
     return {
         increaseCount: function(){return dispatch(increaseAction);},
         decreaseCount: function(){return dispatch(decreaseAction);}
