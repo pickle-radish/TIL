@@ -86,7 +86,9 @@ root@server:~/docker# apt-get install golang-go
 root@server:~/docker# go run main.go2019/12/23 15:00:03 start server
 (새 터미널에서)root@server:~# curl http://localhost:8080/Hello Docker!!root@server:~# 
 (브라우져에서)![img](https://lh4.googleusercontent.com/AU48W16vQ5hcSq7VUrj2hxjOlWL4-QDtXrAM3hlgLGasSKg3yTzyZBUijoYYdAlTJCFEPg929LVkDUTXqcwII6rQMmdrIqZ5ZHURlavdom_Uu_gtYrPCnW6n-VSnEDKhn7YsLDNa)
-**#3 Dockerfile 작성**root@server:~/docker# gedit DockerfileFROM golang:1.9  ⇐ 베이스 이미지를 가져온다.(저장소 이름이 생략 → 도커 허브의 공식 이미지)
+**#3 Dockerfile 작성**
+
+root@server:~/docker# gedit DockerfileFROM golang:1.9  ⇐ 베이스 이미지를 가져온다.(저장소 이름이 생략 → 도커 허브의 공식 이미지)
 RUN mkdir /echo  ⇐ 컨테이너 내부에 /echo 디렉터리 생성하라 COPY main.go /echo
 CMD [ "go", "run", "/echo/main.go" ]
 
@@ -125,13 +127,60 @@ Successfully tagged example/echo:latest
 
 **#5 도커 이미지 확인**
 
-root@server:~/docker# docker image lsREPOSITORY     TAG                 IMAGE ID      CREATED             SIZEexample/echo    latest              be867a4ba9d0    5 minutes ago       750MBgolang       1.9                 ef89ef5c42a9    17 months ago       750MBroot@server:~/docker# docker imagesREPOSITORY     TAG                 IMAGE ID      CREATED             SIZEexample/echo    latest              be867a4ba9d0    5 minutes ago       750MBgolang       1.9                 ef89ef5c42a9    17 months ago       750MB**#6 도커 컨테이너 실행**root@server:~/docker# docker container run -p 9000:8080   example/echo:latestroot@server:~/docker# docker container run -p 9000:8080 -d  example/echo:latestroot@server:~/docker# docker container run -p 9000:8080 -it example/echo:latestroot@server:~/docker# docker container run -p 9000:8080 -itd example/echo:latestroot@server:~/docker# docker container run -p 9000:8080 -it example/echo:latest /bin/bashroot@server:~/docker# docker container run -p 9000:8080 -itd example/echo:latest /bin/bash
-root@server:~/docker# docker container run -p 9003:8080 -itd --name CONTAINER_NAME example/echo:latest /bin/bashroot@server:~/docker# docker container run -p 8080 -itd example/echo:latest /bin/bash**#7 백그라운드에 실행되는 컨테이너에 접속**root@server:~/docker# docker attach *CONTAINER_ID_or_NAME***#8 도커 컨테이터에서 빠져 나오는 방법**입력을 받을 수 없는 경우 ⇒ (다른 터미널에서) docker container stop *CONTAINER_ID_or_NAME*입력을 받을 수 있는 경우 ⇒ Ctrl+C or Ctrl+PQ쉘이 제공되는 경우 ⇒ exit or Ctrl+PQ**#9 도커 컨테이너 실행/중지**root@server:~/docker# docker container stop *CONTAINER_ID_or_NAME*root@server:~/docker# docker container start *CONTAINER_ID_or_NAME***#10 도커 컨테이너 상태 확인**root@server:~/docker# docker container psroot@server:~/docker# docker container lsroot@server:~/docker# docker container ps -aroot@server:~/docker# docker container ls -a**#11 실행 중인 컨테이너를 모두 중지**root@server:~/docker# docker container stop $(docker container ls -q)
+root@server:~/docker# docker image lsREPOSITORY     TAG                 IMAGE ID      CREATED             SIZEexample/echo    latest              be867a4ba9d0    5 minutes ago       750MBgolang       1.9                 ef89ef5c42a9    17 months ago       750MBroot@server:~/docker# docker imagesREPOSITORY     TAG                 IMAGE ID      CREATED             SIZEexample/echo    latest              be867a4ba9d0    5 minutes ago       750MBgolang       1.9                 ef89ef5c42a9    17 months ago       750MB
+
+**#6 도커 컨테이너 실행**
+
+root@server:~/docker# docker container run -p 9000:8080   example/echo:latest
+
+root@server:~/docker# docker container run -p 9000:8080 -d  example/echo:latest
+
+root@server:~/docker# docker container run -p 9000:8080 -it example/echo:latest
+
+root@server:~/docker# docker container run -p 9000:8080 -itd example/echo:latest
+
+root@server:~/docker# docker container run -p 9000:8080 -it example/echo:latest /bin/bash
+
+root@server:~/docker# docker container run -p 9000:8080 -itd example/echo:latest /bin/bash
+
+root@server:~/docker# docker container run -p 9003:8080 -itd --name CONTAINER_NAME example/echo:latest /bin/bash
+
+root@server:~/docker# docker container run -p 8080 -itd example/echo:latest /bin/bash
+
+**#7 백그라운드에 실행되는 컨테이너에 접속**
+
+root@server:~/docker# docker attach *CONTAINER_ID_or_NAME*
+
+**#8 도커 컨테이터에서 빠져 나오는 방법**
+
+입력을 받을 수 없는 경우 ⇒ (다른 터미널에서) docker container stop *CONTAINER_ID_or_NAME*입력을 받을 수 있는 경우 ⇒ Ctrl+C or Ctrl+PQ쉘이 제공되는 경우 ⇒ exit or Ctrl+PQ
+
+**#9 도커 컨테이너 실행/중지**
+
+root@server:~/docker# docker container stop *CONTAINER_ID_or_NAME*
+
+root@server:~/docker# docker container start *CONTAINER_ID_or_NAME*
+
+**#10 도커 컨테이너 상태 확인**
+
+root@server:~/docker# docker container ps
+
+root@server:~/docker# docker container ls
+
+root@server:~/docker# docker container ps -a
+
+root@server:~/docker# docker container ls -a
+
+**#11 실행 중인 컨테이너를 모두 중지**
+
+root@server:~/docker# docker container stop $(docker container ls -q)
 
 https://hub.docker.com/ 회원가입
 
 레퍼지터리/이미지명:태그명
-**도커 이미지 태그 설정**root@server:~/docker# docker images
+**도커 이미지 태그 설정**
+
+root@server:~/docker# docker images
 REPOSITORY     TAG                 IMAGE ID      CREATED             SIZE
 example/echo    latest              11c732eb2923    About an hour ago   750MB
 <none>       <none>              be867a4ba9d0    2 hours ago         750MB
@@ -215,7 +264,7 @@ docker stats
 
 - docker **commit** -m "add hello3.html" mywebserver tkdansg/mywebserverimage:1.0
 
-- docker run --name mws_1.0 -d -P myanjini/mywebserverimage:1.0 
+- docker run --nam e mws_1.0 -d -P myanjini/mywebserverimage:1.0 
 
 <br>
 
