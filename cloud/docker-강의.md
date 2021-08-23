@@ -211,15 +211,87 @@
 
 
 
+## 7. 네트워크 설정
+
+1. 포트포워딩
+   - 도커 실행시 -p 옵션
+     - docker run -p 80:80 nginx #호스트의 80포트와 도커의 80포트를 연결
+     - docker run -p 80 nginx #도커의 80포트를 호스트에서 미사용중인 랜덤한 포트를 연결
+     - docker run -P nginx #도커에서 expose된 모든 포트를 호스트의 랜덤한 포트와 연결
+2. 직접 게이트웨이 생성을 통한 고정 IP할당
+   - docker network create --driver bridge --subnet 192.168.100.0/24 --gateway 192.168.100.254 mynet
+     - --driver: 생략가능 디폴트 bridge
+     - --subnet: 생략가능 디폴트 172.18.0.0, 172.19.0.0 ...
+     - --gateway: 생략가능 디폴트 subnet ip
+     - mynet: 네트워크이름 (사용자가 원하는 이름으로 입력)
+   - docker run -it -name c1 --net mynet --ip 192.168.100.100 busybox
+     - --net: 생략가능 디폴트 기본 네트워크 사용시 원하는 네트워크 지정 가능
+     - --ip: 생략가능 디폴트 mynet의 게이트웨이 사용시 192.186.100.1 번부터 차례로 할당
+   - docker network inspect mynet
+     - inspect로 상세보기 가능
+3. 컨테이너간 통신
+   - docker ru -d --name mysql -v /dbdata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=wordpress -e MYSQL_PASSWORD=wordpress mysql:5.7
+   - docekr run -d --name wordpress --link mysql:mysql -e WORDPRESS_DB_PASSWORD=wordpress -p 80:80 wordpress:4
+     - --link [동작중인 컨테이너 이름]:[alias 이름]
 
 
 
+## 8. 빌드에서 운영까지
 
+#### docker compose
 
+1. 설치
+   - https://docs.docker.com/compose/install/
+2. 기본 문법
+   - https://docs.docker.com/reference/
 
+```yaml
+version: "3.9"
+    
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    volumes:
+      - wordpress_data:/var/www/html
+    ports:
+      - "80:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    command: /bin/bash
+    
+volumes:
+  db_data: {}
+  wordpress_data: {}
+```
 
+3. 명령어
 
-
-
-
+- docker-compose config #문법 확인
+- docker-compose up #실행
+- docker-compose up -d #백그라운드 실행
+- docker-compose -f /other-dir/docker-compose.yml #다른 위치의 docker-compose파일 
+- docker-compose ps #해당 compose의 컨테이너들만 상태 확인
+- docker-compose scale [service_name]=[count] #해당 서비스를 개수만큼 sacle
+- docker-compose run [service_name] [command] #특정 서비스에 명령어 전달
+- docker-compose logs [service_name] #특정 서비스의 로그 확인
+- docker-compose stop
+- docker-compose start
+- docker-compose down
 
