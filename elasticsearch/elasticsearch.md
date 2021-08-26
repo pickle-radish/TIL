@@ -39,7 +39,7 @@ https://esbook.kimjmin.net/02-install/2.3-elasticsearch/2.3.2-elasticsearch.yml
 - bin/elasticsearch -d -p es.pid
   - es.pid 라는 파일을 생성
   - cat es.pid 로 확인하면 프로세스 아이디가 찍힌다
-  - kill \`cat es.pid\` 명령어로 elasticsearch 실행 종료
+  - `kill 'cat es.pid'` 명령어로 elasticsearch 실행 종료
 - -E node.name="node-new"
   - 실행시 파라미터로 환경변수 설정 가능
 
