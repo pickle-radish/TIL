@@ -4,6 +4,8 @@
 
 
 
+## 설치
+
 ### 옵션
 
 #### config/elasticsearch.yml
@@ -134,51 +136,174 @@ https://esbook.kimjmin.net/02-install/2.3-elasticsearch/2.3.2-elasticsearch.yml
     - config 파일 밑에 users에 생성
     - 해당 노드에서만 사용 가능
 
-  
+
+
+
+## search
+
+https://esbook.kimjmin.net/
+
+### Share Monitoring
+
+- kibana > Management > Stack Monitoring > Or, set up with self monitoring
+- 모니터링 데이터가 클러스터에 저장된다
+- `GET _cluster/setting`
+  - 위 명령의 결과 json을 PUT 명령어 바디로 보낼 때 값 셋팅해서 전송
+
+
+
+### API
+
+- `GET /` = `curl localhost:9200`
+
+- 인덱스 생성
+  - ```sh
+    curl -XPUT "http://localhost:9200/books" -H 'Content-Type: application/json' -d'
+    {
+      "settings": {
+        "number_of_shards": 5,
+        "number_of_replicas": 1
+      }
+    }'
+    ```
+
+- 삭제
+
+  - `DELETE books`
+
+- 리플리카 개수
+
+  - ```sh
+    curl -XPUT "http://localhost:9200/books/_settings" -H 'Content-Type: application/json' -d'
+    {
+      "number_of_replicas": 0
+    }'
+    ```
+
+- 프라이머리 개수는 변경 불가
+
+- `_cat` api
+  - `_cat/nodes`
+  - `_cat/indices`
+    - `_cat/indices?v&h=[head_name],[name],[name]`
+  - `_cat/shards/books`
+
+
+
+### CRUD
+
+- `http://<호스트>:<포트>/<인덱스>/_doc/<도큐먼트 id>
+- PUT : 입력
+- GET : 조회
+  - `GET my_index/_doc/1`
+  - `GET my_index/_source/1`
+
+- DELETE : 삭제
+
+- POST : PUT 과 같이 입력, 수정
+
+  - `POST my_index/_doc {}`
+
+    - id 자동 생성
+
+  - ```sh
+    POST my_index/_update/1 
+    {
+    	"doc":{
+    		"age: 40"
+    	}
+    }
+    ```
 
   
 
-  
+##### bulk
+
+- 한번에 여러개 명령어를 실행
+
+```sh
+POST _bulk
+{"index":{"_index":"test", "_id":"1"}}
+{"field":"value one"}
+{"index":{"_index":"test", "_id":"2"}}
+{"field":"value two"}
+{"delete":{"_index":"test", "_id":"2"}}
+{"create":{"_index":"test", "_id":"3"}}
+{"field":"value three"}
+{"update":{"_index":"test", "_id":"1"}}
+{"doc":{"field":"value two"}}
+```
+
+
+
+### 검색
+
+- url 검색
+
+  - `GET test/_search?q=two`
+  - `GET test/_search?q=field:three AND field:value`
+
+- query 검색
+
+  - ```sh
+    GET text/_search
+    {
+    	"query": {
+    		"match": {
+    			"message": "elasticseasrch"
+    		}
+    	}
+    }
+    ```
+
+- operator
+
+  - 검색어가 여러개일 경우 기본적으로 or조건 다음과같이 and조건으로 사용할 수 있다
+
+  - ```sh
+    GET my_index/_search
+    {
+      "query": {
+        "match": {
+          "message": {
+            "query": "quick dog",
+            "operator": "and"
+          }
+        }
+      }
+    }
+    ```
+
+- match_phrase
+
+  - 검색어의 띄어쓰기가 있을 경우 하나의 단어로 검색 (keyword)
+
+  - ```sh
+    GET my_index/_search
+    {
+      "query": {
+        "match_phrase": {
+          "message": "lazy dog"
+        }
+      }
+    }
+    ```
+
+  - slop 옵션으로 단어 사이의 몇개의 단어를 허용할지 추가할 수있다
+
+  - ```sh
+    GET my_index/_search
+    {
+      "query": {
+        "match_phrase": {
+          "message": {
+            "query": "lazy dog",
+            "slop": 1
+          }
+        }
+      }
+    }
+    ```
 
   
-
-  
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
