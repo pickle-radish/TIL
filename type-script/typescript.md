@@ -71,5 +71,16 @@ let b: string;
 
 
 
+옵션
+
+- noImplicitAny
+  - 추론시 Any가 나올 경우 any를 명시적으로 하라는 에러
+
+- strictNullChecks
+  - 모든 타입에 자동으로 포함되어 있는 null 과 undefined 를 제거해준다
+
+- noImplicitReturns
+  - return 이 빠질 경우 에러
+
 
 
