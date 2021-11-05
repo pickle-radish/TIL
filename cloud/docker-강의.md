@@ -297,4 +297,5 @@ volumes:
 - docker-compose stop
 - docker-compose start
 - docker-compose down
+- docker-compose restart [service_name]
 

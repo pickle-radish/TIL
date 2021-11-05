@@ -107,6 +107,50 @@
 
 
 
+#### logstash 설정파일
+
+- `mkdir logstash`
+
+- 해당 폴더 밑에 `logstash.yml` 생성
+
+  ```yml
+  http.host: "0.0.0.0"
+  xpack.monitoring.elasticsearch.hosts: ["https://es01:9200"]
+                             #https는 ssl사용시,es01 = node 1번의 도메인, 포트는 도커 내부
+  xpack.monitoring.enabled: true
+  xpack.monitoring.elasticsearch.username: elastic
+  xpack.monitoring.elasticsearch.password: PleaseChangeMe
+  
+  xpack.monitoring.elasticsearch.ssl.certificate_authority: /usr/share/elasticsearch/config/certificates/ca/ca.crt
+  xpack.monitoring.elasticsearch.ssl.verification_mode: certificate
+  xpack.monitoring.elasticsearch.sniffing: true
+  ```
+
+- 같은 경로에 logstash.conf 파일도 생성
+
+  ```yml
+  input {
+    tcp {
+      port => 5000
+    }
+  }
+  
+  output {
+    elasticsearch {
+      ssl => true
+      ssl_certificate_verification => true
+      cacert => "/usr/share/elasticsearch/config/certificates/ca/ca.crt"
+      hosts => "https://es01:9200"  #yml파일의 elastic 도메인과 동일
+      user => "elastic"
+      password => "changeme"
+    }
+  }
+  ```
+
+  
+
+
+
 #### docker-compose
 
 - `vi docker-compose.yml`
@@ -240,6 +284,30 @@
         - certs:$CERTS_DIR
       networks:
         - elastic
+        
+    logstash:
+      image: logstash:${VERSION}
+      container_name: logstash
+      depends_on: {"es01": {"condition": "service_healthy"}}
+      environment:
+        LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      volumes:
+        - type: bind
+          source: ./logstash/logstash.yml
+          target: /usr/share/logstash/config/logstash.yml
+          read_only: true
+        - type: bind
+          source: ./logstash/logstash.conf
+          target: /usr/share/logstash/pipeline/logstash.conf
+          read_only: true
+        - certs:$CERTS_DIR
+      ports:
+        - "5000:5000/tcp"
+        - "5000:5000/udp"
+        - 9600:9600
+      networks:
+        - elastic
+  
   volumes:
     data01:
       driver: local
@@ -255,7 +323,7 @@
       driver: bridge
   
   ```
-
+  
   
 
 
@@ -280,7 +348,25 @@
 ##### docker-compose 재실행
 
 - `docker-compose stop`
-  - down을 하게 되면 컨테이너 삭제이므로 설정된 key값이 날라간다
+
+- .env 파일에서 kibana 비밀번호를 생성된 비밀번호로 변경
+
+- logstash.yml 파일에 elastic 비밀번호도 해당 비밀번호로 변경
+
+  ```yml
+  xpack.monitoring.elasticsearch.password: ${elastic password}
+  ```
+
+- logstash.conf 파일에 elastic 비밀번호도 변경
+
+  ```yml
+  password => "${elastic password}"
+  ```
+
+  
+
+
+
 - `docker-compose up -d`
 
 
@@ -344,4 +430,11 @@
     - false는 설정 값이 남아있고 null은 설정 자체를 지운다
 
 
+
+#### logstash확인
+
+- `echo 'hello logstash' | nc 0.0.0.0 5000` 명령어 실행
+- kibana 에서 logstash index 확인 (logstash-2021.11.05-000001 의 형태)
+- `GET logstash-2021.11.05-000001/_search` 로 입력한 데이터 확인
+  - `message`  컬럼에 `hello logstash` 값 확인
 
