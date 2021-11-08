@@ -29,10 +29,11 @@
 - `vi elasticsearch/Dockerfile` 해당 폴더에 Dockerfile 생성
 
   ```
+  ARG VERSION
   FROM elasticsearch:${VERSION}
   RUN bin/elasticsearch-plugin install analysis-nori
   ```
-
+  
   - `FROM elasticsearch:${VERSION}`  elastic 해당 버전의 이미지 선택
   - `RUN bin/elasticsearch-plugin install analysis-nori` nori 플러그인 설치
 
@@ -111,6 +112,16 @@
 
 - `mkdir logstash`
 
+- `Dockerfile` 생성
+
+  ```
+  ARG VERSION
+  FROM logstash:${VERSION}
+  RUN mkdir /usr/share/logstash/metadata
+  ```
+
+  
+
 - 해당 폴더 밑에 `logstash.yml` 생성
 
   ```yml
@@ -162,6 +173,8 @@
     es01:
       build:
         context: elasticsearch/
+        args:
+        	VERSION: $VERSION
       container_name: es01
       environment:
         - node.name=es01
@@ -203,6 +216,8 @@
     es02:
       build:
         context: elasticsearch/
+        args:
+        	VERSION: $VERSION
       container_name: es02
       environment:
         - node.name=es02
@@ -235,6 +250,8 @@
     es03:
       build:
         context: elasticsearch/
+        args:
+        	VERSION: $VERSION
       container_name: es03
       environment:
         - node.name=es03
@@ -286,7 +303,10 @@
         - elastic
         
     logstash:
-      image: logstash:${VERSION}
+      build:
+        context: elasticsearch/
+        args:
+        	VERSION: $VERSION
       container_name: logstash
       depends_on: {"es01": {"condition": "service_healthy"}}
       environment:
@@ -335,6 +355,7 @@
 ##### docker-compose 실행
 
 - `docker-compose -f create-certs.yml run --rm create_certs`
+- `docker-compose build`
 - `docker-compose up -d`
 
 
