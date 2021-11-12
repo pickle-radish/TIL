@@ -412,9 +412,7 @@
       elasticsearch {
           hosts => "http://es01:9200"
       }
-      stdout {
-          codec => json
-      }
+      stdout {}
   }
   ```
 

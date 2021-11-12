@@ -191,3 +191,135 @@ output {
 
   
 
+
+
+
+
+## log
+
+- nginx에서 log를 읽을 때 grok을 통해 한줄로 된 log를 각각의 key:value로 파싱할 수 있다
+
+- nginx log 패턴을 변수화 해서 파일로 저장한다 위치는 `./logstash/patterns/nginx.pattern`
+
+  ```
+  NGINX_ACCESS %{IPORHOST:clientip} (?:-|(%{WORD}.%{WORD})) \[%{HTTPDATE:timestamp}\] "(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:referrer} %{QS:agents} %{QS:forwarder} %{GREEDYDATA:jsonstring}
+  ```
+
+- nginx 에서 한글이 깨지지 않으려면 log 설정을 해줘야 한다
+
+  ```conf
+  log_format main escape=none '$remote_addr - [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent" "$http_x_forwarded_for" '
+                        '$request_body';
+  ```
+
+  - `escape=none` 을 추가해 줬다
+  - nginx로그와 logstash 의 패턴이 일치해야 한다 (일치하지 않으면 모든 필드가 다 실패)
+
+- conf 파일설정은 filebeat로 값을 받는 경우로 작성한다
+
+  ```conf
+  input {
+      beats {
+          port=> 5044
+      }
+  }
+  
+  filter {
+      grok {
+          patterns_dir => "/usr/share/logstash/patterns"
+          match => { "message" => "%{NGINX_ACCESS}" }
+          add_field => [ "received_at", "%{@timestamp}" ]
+      }
+  }
+  
+  output {
+      elasticsearch {
+          hosts => "http://es01:9200"
+      }
+      stdout {
+      }
+  }
+  ```
+
+  
+
+##### json 값 파싱
+
+- json 값
+
+  ```json
+  {
+      "query": {  
+          "match": {
+              "txbk_nm": "수능" 
+          }
+      }
+  }
+  ```
+
+  
+
+- body 부분으로 들어오는 json 값을 따로 원하는 값을 지정해서 빼고 싶다면 다음과 같이 사용한다
+
+  ```conf
+  input {
+      beats {
+          port=> 5044
+      }
+  }
+  
+  filter {
+      grok {
+          patterns_dir => "/usr/share/logstash/patterns"
+          match => { "message" => "%{NGINX_ACCESS}" }
+          add_field => [ "received_at", "%{@timestamp}" ]
+      }
+  	
+  	#nginx.pattern 파일의 끝부분을 보면 %{GREEDYDATA:jsonstring} 으로 파싱 되있다 (GREEDYDATA(json)를 jsonstring 필드로 값 파싱)
+      json {
+          source => "jsonstring" #jsonstring 을 소스로 받는다
+          
+          #target => "search" #search 필드로 값을 저장 target을 지정하지 않으면 json의 첫 key값(query)으로 필드가 저장된다
+      }
+  
+      grok {
+          match => { "[query][match]" => '%{WORD}\"=>\"(?<word>[^"]+)' } # "txbk_nm" => "수능" 형태로 저장된 값에서 값을 파싱
+      }
+  
+      grok {
+      #   match => { "[search]" => '%{WORD}\":\"(?<word>[^\"]+)' } #string형태로 저장된 json형태를 파싱할 때 사용
+      }
+      
+      #elastic이 date 형식으로 인식하는 format으로 변경
+      date {
+          match => [ "timestamp", "dd/MMM/YYYY:H:m:s Z" ]
+          target => "search_time"
+      }
+      
+  
+  	#message에서 파싱된 불필요한 필드
+      mutate {
+          remove_field => ["clientip", "timestamp", "verb", "httpversion", "rawrequest:", "response", "bytes", "referrer", "agents", "forwarder", "request", "jsonstring", "query"]
+      }
+  
+  	#기본적으로 파싱되는 시스템 필드
+      mutate {
+          remove_field => ["@version", "@timestamp", "host", "input", "log", "agent", "ecs", "message", "tags"]
+      }
+  
+  }
+  
+  output {
+      elasticsearch {
+          hosts => "http://es01:9200"
+      }
+      stdout {
+      }
+  }
+  
+  ```
+  
+  
+
