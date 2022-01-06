@@ -32,7 +32,9 @@
 
 
 
-### 기본 Widget
+### 기본 Widget layout
+
+참고 사이트 [https://medium.com/flutter-community/...]
 
 
 
@@ -86,7 +88,7 @@
   - crossAxisAlignment
     - CrossAxisAlignment.start // 시작점으로 정렬
     - CrossAxisAlignment.end // 가로축 끝으로 정렬
-    - CrossAxisAlignment.stretch // 가로축 끝으로 정렬
+    - CrossAxisAlignment.stretch // 가로축 끝까지 길이를 채운다
 
   - mainAxisAlignment
     - MainAxisAlignment.center //세로 가운데 정렬
@@ -100,7 +102,7 @@
 
 
 
-- Row // 가로로 나열시 사용
+- Row // 가로로 나열시 사용  //Column의 하위 속성을 비슷하게 사용
 
 
 
