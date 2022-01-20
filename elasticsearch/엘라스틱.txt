@@ -1,0 +1,31 @@
+엘라스틱
+
+엘라스틱과 키바나는 같은 버전
+
+- 클러스터, 노드 네임 설정
+	클러스터 이름이 다를 경우 다른 클러스터로 새로 생성
+	이름이 같은 경우 한 클러스터 안에서 다른 노드로 실행
+
+- network.host 디폴트 설정시 로컬로 자동 설정 -> 개발자 모드 실행
+	_site_ : 내부 ip
+
+	ip 설정시 운영 전환으로 변경되면서 추가 설정 필요e
+	엘라스틱 레퍼런스 -> 셋업 -> important system configuration
+
+	- file descriptors : 프로세서가 점유할 수 있는 파일 개수
+		- ulimit -n [number] : session이 끊기면 초기화
+		- /etc/security/limits.conf 파일 수정
+			-> username - nofile 65535 추가 -> 시스템 재시작
+	- max virtual memory
+		- sudo sysctl -w vm.max_map_count=262144 (이것도 임시)
+		- /etc/sysctl.conf -> vm.max_map_count=262144  추가
+
+	- discovery.seed_hosts: ["호스트이름 or ip"]
+	- cluster.initial_master_nodes: ["마스터노드 이름"]  (discovery.seed_hosts와 같이 해줘야 하는 설정)
+
+- elastic.yml
+	cluster.name: "es-cluster" 
+	node.name: "node-1"
+	network.host: ["_local_", "_site_"]
+	discovery.seed_hosts: ["elastic-1"]
+	cluster.initial_master_nodes: ["node-1"]

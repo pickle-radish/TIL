@@ -168,34 +168,17 @@
 
 #### snack bar
 
-- show
-- body 부분을 builder로 감싼다
-
-```main.dart
-body: Builder(
-  builder: (context) {
-    return Widget(
-    );
-  }
-```
-
 - 다음과 같이 사용
 
 ```snackbar.dart
-void showSnackBar(BuildContext context) {
-  Scaffold.of(context).showSnackBar(
-    SnackBar(
-      content: Text(
-        '스낵바 메세지',
-        textAlign: TextAlign.center,
-      ),
-      duration: Duration(
-        seconds: 2, //스낵바가 떠있는 시간
-      ),
-      backgroundColor: Colors.blue,
-    )
-  );
-}
+onPressed: (){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Like a new Snack bar!'),
+            duration: Duration(seconds: 5),
+        )
+    );
+},
 ```
 
 
@@ -233,6 +216,35 @@ void showToast(String message) {
 
 
 
+
+
+
+
+#### timer_builder, intl
+
+[https://pub.dev/packages/timer_builder/versions] timer_builder (get current time)
+
+[https://pub.dev/packages/intl/versions] intl (date_format)
+
+```main.dart
+import 'package:timer_builder/timer_builder.dart';
+import 'package:intl/intl.dart';
+
+TimerBuilder.periodic(
+	(Duration(minutes: 1)),
+	builder: (context) {
+		return Text(
+			'${getSystemTime()}',
+		);
+	}
+),
+
+
+String getSystemTime() {
+    var now = DateTime.now();
+    return DateFormat("h:mm a").format(now);  // h: 시, mm: 분, a: am,pm
+}
+```
 
 
 
