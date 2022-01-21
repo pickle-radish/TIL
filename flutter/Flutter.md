@@ -145,6 +145,18 @@
   - duration
     - Duration
       - milliseconds
+  
+  ```main.dart
+  ScaffoldMessenger.of(context).showSnackBar(
+  	SnackBar(
+  		content: Text('You canceled "Like!"'),
+  		duration: Duration(seconds: 3),
+  		backgroundColor: Colors.grey,
+  	),
+  );
+  ```
+  
+  
 
 
 
@@ -161,6 +173,155 @@
 
 
 - Container
+
+
+
+##### button
+
+- TextButton
+
+  ```main.dart
+  TextButton(
+  	onPressed:(){},
+  	child: Text(
+  		'Text button',
+      	style: TextStyle(
+      		fontSize: 20,
+      	)
+      ),
+      style: TextButton.styleForm(
+      	primary: Colors.red //글자색깔
+      	backgroundColor: Colors.blue, //배경색깔
+      	
+      )
+  )
+  ```
+
+  - onLongPress - 버튼을 길게 누를시 동작
+
+  
+
+
+
+
+
+
+
+- ElevatedButton
+
+  ```main.dart
+  ElevatedButton(
+  	onPressed:(){},
+  	child: Text(
+  		'Text button',
+      	style: TextStyle(
+      		fontSize: 20,
+      	)
+      ),
+      style: ElevatedButton.styleForm(
+      	primary: Colors.red //배경색깔
+  
+  		//버튼 모양 디자인
+          shape: RoundedRectangleBorder(
+  			borderRadius: BorderRadius.circular(10)
+  		),
+  		elevation: 0,
+      )
+  )
+  ```
+
+
+
+- OutlinedButton
+
+  ```main.dart
+  OutlinedButton(
+  	onPressed: () {},
+  	child: Text('Outlined button'),
+  	style: OutlinedButton.styleForm(
+  		priamr: Colors.green, //글자색깔
+  		//윤곽선 디자인
+  		side: BorderSide(
+  			color: Colors.black87,
+  			width: 2,
+  		)
+  	)
+  )
+  ```
+
+  
+
+- icon
+
+  ```main.dart
+  TextButton.icon(
+  	onPressed: (){},
+  	icon: Icon(
+  		Icons.home,
+  		size: 30,
+  		color: Colors.yellow,
+  	),
+  	label: Text('Go to home'),
+  	style: TextButton.styleForm(
+  		primary: Colors.purple, // icon 색상 미설정시 같이 적용
+  		minimumSize: Size(100, 100),
+  		
+  	)
+  )
+  ```
+
+  - `TextButton.icon`, `ElevatedButton`, `OutlinedButton.icon` 동일하게 사용 가능
+
+
+
+- 비활성
+
+  - onPressed 값을 빈 값인 `() {}` 이 아닌 null을 주면 비활성화 버튼이 된다.
+
+  ```main.dart
+  TextButton(
+  	onPressed: null,
+  	child: Text(
+  		'Text button',
+      	style: TextStyle(
+      		fontSize: 20,
+      	)
+      ),
+      style: TextButton.styleForm(
+      	primary: Colors.red
+      	backgroundColor: Colors.blue,
+      	onSurface: Colors.pink //비활성화시 색상
+      )
+  )
+  ```
+
+  
+
+- Button Bar
+
+  - 버튼들을 가로방향으로 끝까지 적용 (default)
+  - 공간이 모자를 시 자동으로 세로 정렬
+
+  ```main.dart
+  ButtonBar(
+  	alignment: MainAxisAlignment.center, //가운데 정렬
+  	buttonPadding: EdgeInsets.all(20), //버튼들의 패딩
+  	children: [
+  		TextButton(
+  			onPressed:() {},
+  			child: Text('Text Button'),
+  		),
+  		ElevatedButton(
+  			onPressed:() {},
+  			child: Text('ElevatedButton'),
+  		)
+  	]
+  )
+  ```
+
+  
+
+
 
 
 
@@ -219,6 +380,8 @@ void showToast(String message) {
 
 
 
+
+## library
 
 #### timer_builder, intl
 
