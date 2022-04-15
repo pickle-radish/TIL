@@ -176,6 +176,21 @@
 
 
 
+###### 
+
+##### form
+
+- TextFormField
+  - `obscureText: true`  : 비밀번호 type
+  - keyboardType
+    - `TextInputType.`
+  - onSaved
+  - onChanged
+
+
+
+
+
 ##### button
 
 - TextButton
@@ -327,7 +342,7 @@
 
 
 
-#### snack bar
+##### snack bar
 
 - 다음과 같이 사용
 
@@ -342,11 +357,52 @@ onPressed: (){
 },
 ```
 
+- 글로벌 key를 이용
+
+```main.dart
+void main() {
+	runApp(MyApp());
+}
+
+fianl rootScaffoldKey = GlobalKey<ScaffoldMessengerState>();
+
+class MyApp extends StatelessWidget {
+	@override
+	Widget build(BuildContext context) {
+		return MateriaApp(
+			scaffoldMessengerKey: rootScaffoldKey,
+            home: MyPage(),
+		)
+	}
+}
+
+class MyPage extends StatelessWidget {
+	@override
+	Widget build(BuildContext context) {
+		return Scaffold(
+			body: HomeBody(),
+			floatingActionButton: FloatingActionButton(
+				child: Icon(Icons.thumb_up),
+                onPressed: () {
+					rootScaffoldKey.currentState.showSnackBar(
+						SnackBar(
+							content: Text('Like a new Snack bar!'),
+				            duration: Duration(seconds: 5),
+						)
+					)
+				}
+			)
+		)
+	
+	}
+}
+```
 
 
 
 
-#### toast
+
+##### toast
 
 - pubspec.yaml 에서 dev_dependencies 부분에 라이브러리 등록
 
@@ -376,6 +432,29 @@ void showToast(String message) {
 - `showToast("message content");`
 
 
+
+
+
+##### loading_indicator
+
+- 여러가지 로딩 인디케이터
+- https://pub.dev/packages/loading_indicator
+- https://pub.dev/packages/flutter_spinkit
+
+
+
+
+
+## Page route
+
+```main.dart
+Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) {
+    	return ClassName();
+    }),
+);
+```
 
 
 
@@ -411,3 +490,16 @@ String getSystemTime() {
 
 
 
+
+
+
+
+
+
+
+
+## Key
+
+https://youtu.be/lQB6HjleLMs
+
+코딩쉐프 조금 매운맛 18번 강좌
