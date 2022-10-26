@@ -282,7 +282,7 @@ docker 설정이 아니라 리눅스 환경설정을 변경해야 한다
   
   output {
     elasticsearch {
-      hosts => "https://es01:9200"  #yml파일의 elastic 도메인과 동일
+      hosts => "http://es01:9200"  #yml파일의 elastic 도메인과 동일
     }
   }
   ```
@@ -296,7 +296,7 @@ docker 설정이 아니라 리눅스 환경설정을 변경해야 한다
   ```yml
     logstash:
       build:
-        context: elasticsearch/
+        context: logstash/
         args:
         	VERSION: $VERSION
       container_name: logstash
@@ -313,7 +313,6 @@ docker 설정이 아니라 리눅스 환경설정을 변경해야 한다
           source: ./logstash/logstash.conf
           target: /usr/share/logstash/pipeline/logstash.conf
           read_only: true
-        - certs:$CERTS_DIR
       ports:
         - "5000:5000/tcp"
         - "5000:5000/udp"
