@@ -150,6 +150,28 @@
 
 ## 실행
 
+처음 리눅스에서 실행시
+
+```
+ERROR: [1] bootstrap checks failed 
+[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+```
+
+에러가 뜨는데
+
+docker 설정이 아니라 리눅스 환경설정을 변경해야 한다
+
+
+
+`sysctl vm.max_map_count`  명령어를 치면 현재 vm.max_map_count의 값을 확인할 수 있다
+
+- 일시적 변경
+  - `sysctl -w vm.max_map_count=262144`
+- 영구적 변경
+  - `vi /etc/sysctl.conf` 명령어로 해당 파일을 열어서
+  - `vm.max_map_count=262144` 추가
+  - 저장후 `sysctl -p` 명령어 실행하면 재시작 없이 적용 완료
+
 
 
 ##### docker-compose 실행
@@ -260,7 +282,7 @@
   
   output {
     elasticsearch {
-      hosts => "https://es01:9200"  #yml파일의 elastic 도메인과 동일
+      hosts => "http://es01:9200"  #yml파일의 elastic 도메인과 동일
     }
   }
   ```
@@ -274,7 +296,7 @@
   ```yml
     logstash:
       build:
-        context: elasticsearch/
+        context: logstash/
         args:
         	VERSION: $VERSION
       container_name: logstash
@@ -291,7 +313,6 @@
           source: ./logstash/logstash.conf
           target: /usr/share/logstash/pipeline/logstash.conf
           read_only: true
-        - certs:$CERTS_DIR
       ports:
         - "5000:5000/tcp"
         - "5000:5000/udp"
